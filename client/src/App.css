@@ -1,0 +1,19 @@
+.navBarButtoon {
+  display: inline-block;
+}
+
+.footer,
+.form-container,
+.navbar-background {
+  border-radius: 10px;
+  background-color: #fff6f6;
+}
+
+.button-color {
+  background-color: brown;
+  color: white;
+}
+
+.footerlink {
+  color: brown;
+}
