@@ -1,9 +1,6 @@
-const express = require("express");
-const router = express.Router();
-const _ = require("lodash");
-
-var { scoreOfDisease, Disease } = require("../models/diseases");
-var { Patient } = require("../models/patients");
+const router = require("express").Router();
+const { scoreOfDisease, Disease } = require("../models/Disease");
+const { Patient } = require("../models/Patient");
 
 /*
     GET /app/getdiseases -> return JSON with all diseases in the system, sorted alphabetically
@@ -55,11 +52,9 @@ router.post("/adddisease", (req, res) => {
         res.status(400).redirect("/systemsettings");
       });
   } else {
-    res
-      .status(400)
-      .redirect("/systemsettings", {
-        messages: req.flash("success_msg", "Succesful test"),
-      });
+    res.status(400).redirect("/systemsettings", {
+      messages: req.flash("success_msg", "Succesful test"),
+    });
   }
 });
 

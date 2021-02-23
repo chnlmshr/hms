@@ -1,72 +1,35 @@
 import { useState } from "react";
+import {
+  loginPatient,
+  loginDoctor,
+  useAuthDispatch,
+  useAuthState,
+} from "../Context";
 
 const Doctor = (props) => {
   const initialState = {
     email: "",
     password: "",
-    error: "",
   };
   const [state, setState] = useState(initialState);
+  const dispatch = useAuthDispatch();
+  const { loading, errorMessage } = useAuthState();
 
   const handleOnChange = (event) =>
     setState({ ...state, [event.target.name]: event.target.value });
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    setState(initialState);
-  };
 
-  return (
-    <form className="p-3" onSubmit={handleOnSubmit}>
-      <div className="form-group">
-        <input
-          type="email"
-          className="form-control"
-          name="email"
-          value={state.email}
-          onChange={handleOnChange}
-          placeholder="Email"
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          name="password"
-          aria-describedby="error"
-          min={6}
-          value={state.password}
-          onChange={handleOnChange}
-          placeholder="Password"
-        />
-        <small id="error" className="form-text text-muted">
-          {state.error}
-        </small>
-      </div>
-      <button type="submit" className="btn btn-primary float-right">
-        Login
-      </button>
-    </form>
-  );
-};
-
-const Patient = (props) => {
-  const initialState = {
-    name: "",
-    email: "",
-    error: "",
-    password: "",
-    age: "",
-    sex: "",
-  };
-  const [state, setState] = useState(initialState);
-
-  const handleOnChange = (event) =>
-    setState({ ...state, [event.target.name]: event.target.value });
-
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    setState(initialState);
+    try {
+      let response = await loginDoctor(dispatch, state);
+      if (!response && !response.doctor) {
+        return;
+      }
+      props.history.push("/doctor");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -92,11 +55,79 @@ const Patient = (props) => {
           onChange={handleOnChange}
           placeholder="Password"
         />
-        <small id="error" className="form-text text-muted">
-          {state.error}
+        <small id="error" className="form-text">
+          {errorMessage}
         </small>
       </div>
-      <button type="submit" className="btn btn-primary float-right">
+      <button
+        type="submit"
+        className="btn btn-primary float-right"
+        disabled={loading}
+      >
+        Login
+      </button>
+    </form>
+  );
+};
+
+const Patient = (props) => {
+  const initialState = {
+    email: "",
+    password: "",
+  };
+  const [state, setState] = useState(initialState);
+  const dispatch = useAuthDispatch();
+  const { loading, errorMessage } = useAuthState();
+
+  const handleOnChange = (event) =>
+    setState({ ...state, [event.target.name]: event.target.value });
+
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      let response = await loginPatient(dispatch, state);
+      if (!response && !response.patient) {
+        return;
+      }
+      props.history.push("/patient");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <form className="p-3" onSubmit={handleOnSubmit}>
+      <div className="form-group">
+        <input
+          type="email"
+          className="form-control"
+          name="email"
+          value={state.email}
+          onChange={handleOnChange}
+          placeholder="Email"
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="password"
+          className="form-control"
+          name="password"
+          aria-describedby="error"
+          minLength={6}
+          value={state.password}
+          onChange={handleOnChange}
+          placeholder="Password"
+        />
+        <small id="error" className="form-text">
+          {errorMessage}
+        </small>
+      </div>
+      <button
+        disabled={loading}
+        type="submit"
+        className="btn btn-primary float-right"
+      >
         Login
       </button>
     </form>
@@ -105,81 +136,72 @@ const Patient = (props) => {
 
 export const Login = (props) => {
   return (
-    <div className="navBarButtoon">
-      <button
-        type="button"
-        className="btn btn-outline-success"
-        data-toggle="modal"
-        data-target="#loginModal"
-      >
-        Login
-      </button>
-      <div
-        className="modal fade"
-        id="loginModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="loginModalTitle"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Login</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <ul className="nav nav-tabs" id="loginTab" role="tablist">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active"
-                    id="doctorlogin-tab"
-                    data-toggle="tab"
-                    href="#doctorlogin"
-                    role="tab"
-                    aria-controls="doctorlogin"
-                    aria-selected="true"
+    <div>
+      <nav className="navbar navbar-expand-lg navbar-dark navbar-background">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="/">
+            HMS
+          </a>
+          <div>
+            <a className="btn navbar-button" href="">
+              Login
+            </a>
+            <a className="btn navbar-button ml-3" href="/register">
+              Register
+            </a>
+          </div>
+        </div>
+      </nav>
+      <div className="container my-5 py-5">
+        <div className="row">
+          <div className="col-md-6 offset-md-3">
+            <div className="card form-container">
+              <div className="card-body">
+                <ul className="nav nav-tabs" id="loginTab" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      id="doctorlogin-tab"
+                      data-toggle="tab"
+                      href="#doctorlogin"
+                      role="tab"
+                      aria-controls="doctorlogin"
+                      aria-selected="true"
+                    >
+                      Doctor
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      id="patientlogin-tab"
+                      data-toggle="tab"
+                      href="#patientlogin"
+                      role="tab"
+                      aria-controls="patientlogin"
+                      aria-selected="false"
+                    >
+                      Patient
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content" id="loginTabContent">
+                  <div
+                    className="tab-pane fade show active"
+                    id="doctorlogin"
+                    role="tabpanel"
+                    aria-labelledby="doctorlogin-tab"
                   >
-                    Doctor
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    id="patientlogin-tab"
-                    data-toggle="tab"
-                    href="#patientlogin"
-                    role="tab"
-                    aria-controls="patientlogin"
-                    aria-selected="false"
+                    <Doctor {...props} />
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="patientlogin"
+                    role="tabpanel"
+                    aria-labelledby="patientlogin-tab"
                   >
-                    Patient
-                  </a>
-                </li>
-              </ul>
-              <div className="tab-content" id="loginTabContent">
-                <div
-                  className="tab-pane fade show active"
-                  id="doctorlogin"
-                  role="tabpanel"
-                  aria-labelledby="doctorlogin-tab"
-                >
-                  <Doctor />
-                </div>
-                <div
-                  className="tab-pane fade"
-                  id="patientlogin"
-                  role="tabpanel"
-                  aria-labelledby="patientlogin-tab"
-                >
-                  <Patient />
+                    <Patient {...props} />
+                  </div>
                 </div>
               </div>
             </div>

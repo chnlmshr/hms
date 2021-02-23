@@ -1,23 +1,39 @@
 import { useState } from "react";
+import {
+  registerPatient,
+  registerDoctor,
+  useAuthDispatch,
+  useAuthState,
+} from "../Context";
 
 const Doctor = (props) => {
   const initialState = {
     name: "",
     email: "",
-    error: "",
-    phone: "",
     password: "",
-    confirmPassword: "",
+    confirmpassword: "",
+    phone: "",
     degree: "",
   };
   const [state, setState] = useState(initialState);
+  const dispatch = useAuthDispatch();
+  const { loading, errorMessage } = useAuthState();
 
   const handleOnChange = (event) =>
     setState({ ...state, [event.target.name]: event.target.value });
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    setState(initialState);
+
+    try {
+      let response = await registerDoctor(dispatch, state);
+      if (!response && !response.doctor) {
+        return;
+      }
+      props.history.push("/doctor");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,30 +46,18 @@ const Doctor = (props) => {
           value={state.name}
           onChange={handleOnChange}
           placeholder="Name"
+          required
         />
       </div>
       <div className="form-group">
         <input
           type="email"
           className="form-control"
-          aria-describedby="error"
           name="email"
           value={state.email}
           onChange={handleOnChange}
           placeholder="Email"
-        />
-        <small id="error" className="form-text text-muted">
-          {state.error}
-        </small>
-      </div>
-      <div className="form-group">
-        <input
-          type="phone"
-          className="form-control"
-          name="phone"
-          value={state.phone}
-          onChange={handleOnChange}
-          placeholder="Phone"
+          required
         />
       </div>
       <div className="form-group">
@@ -65,17 +69,30 @@ const Doctor = (props) => {
           value={state.password}
           onChange={handleOnChange}
           placeholder="Password"
+          required
         />
       </div>
       <div className="form-group">
         <input
           type="password"
           className="form-control"
-          name="confirmPassword"
+          name="confirmpassword"
           minLength={6}
-          value={state.confirmPassword}
+          value={state.confirmpassword}
           onChange={handleOnChange}
           placeholder="Confirm Password"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="phone"
+          className="form-control"
+          name="phone"
+          value={state.phone}
+          onChange={handleOnChange}
+          placeholder="Phone"
+          required
         />
       </div>
       <div className="form-group">
@@ -83,12 +100,21 @@ const Doctor = (props) => {
           type="text"
           className="form-control"
           name="degree"
+          aria-describedby="error"
           value={state.degree}
           onChange={handleOnChange}
           placeholder="Degree"
+          required
         />
+        <small id="error" className="form-text">
+          {errorMessage}
+        </small>
       </div>
-      <button type="submit" className="btn btn-primary float-right">
+      <button
+        type="submit"
+        className="btn btn-primary float-right"
+        disabled={loading}
+      >
         Register
       </button>
     </form>
@@ -99,20 +125,31 @@ const Patient = (props) => {
   const initialState = {
     name: "",
     email: "",
-    error: "",
     password: "",
-    confirmPassword: "",
+    confirmpassword: "",
+    phone: "",
     age: "",
     sex: "",
   };
   const [state, setState] = useState(initialState);
+  const dispatch = useAuthDispatch();
+  const { loading, errorMessage } = useAuthState();
 
   const handleOnChange = (event) =>
     setState({ ...state, [event.target.name]: event.target.value });
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    setState(initialState);
+
+    try {
+      let response = await registerPatient(dispatch, state);
+      if (!response && !response.patient) {
+        return;
+      }
+      props.history.push("/patient");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -125,21 +162,19 @@ const Patient = (props) => {
           value={state.name}
           onChange={handleOnChange}
           placeholder="Name"
+          required
         />
       </div>
       <div className="form-group">
         <input
           type="email"
           className="form-control"
-          aria-describedby="error"
           name="email"
           value={state.email}
           onChange={handleOnChange}
           placeholder="Email"
+          required
         />
-        <small id="error" className="form-text text-muted">
-          {state.error}
-        </small>
       </div>
       <div className="form-group">
         <input
@@ -150,17 +185,30 @@ const Patient = (props) => {
           value={state.password}
           onChange={handleOnChange}
           placeholder="Password"
+          required
         />
       </div>
       <div className="form-group">
         <input
           type="password"
           className="form-control"
-          name="confirmPassword"
+          name="confirmpassword"
           minLength={6}
-          value={state.confirmPassword}
+          value={state.confirmpassword}
           onChange={handleOnChange}
           placeholder="Confirm Password"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="phone"
+          className="form-control"
+          name="phone"
+          value={state.phone}
+          onChange={handleOnChange}
+          placeholder="Phone"
+          required
         />
       </div>
       <div className="form-group">
@@ -168,10 +216,10 @@ const Patient = (props) => {
           type="number"
           className="form-control"
           name="age"
-          max={120}
           value={state.age}
           onChange={handleOnChange}
           placeholder="Age"
+          required
         />
       </div>
       <div className="form-group">
@@ -179,12 +227,21 @@ const Patient = (props) => {
           type="text"
           className="form-control"
           name="sex"
-          value={state.sex}
+          aria-describedby="error"
+          value={state.degree}
           onChange={handleOnChange}
-          placeholder="Sex"
+          placeholder="Gender"
+          required
         />
+        <small id="error" className="form-text">
+          {errorMessage}
+        </small>
       </div>
-      <button type="submit" className="btn btn-primary float-right">
+      <button
+        type="submit"
+        className="btn btn-primary float-right"
+        disabled={loading}
+      >
         Register
       </button>
     </form>
@@ -193,81 +250,72 @@ const Patient = (props) => {
 
 export const Register = (props) => {
   return (
-    <div className="navBarButtoon ml-3">
-      <button
-        type="button"
-        className="btn btn-outline-success"
-        data-toggle="modal"
-        data-target="#registerModal"
-      >
-        Register
-      </button>
-      <div
-        className="modal fade"
-        id="registerModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="registerModalTitle"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Register</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <ul className="nav nav-tabs" id="registerTab" role="tablist">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active"
-                    id="doctor-tab"
-                    data-toggle="tab"
-                    href="#doctor"
-                    role="tab"
-                    aria-controls="doctor"
-                    aria-selected="true"
+    <div>
+      <nav className="navbar navbar-expand-lg navbar-dark navbar-background">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="/">
+            HMS
+          </a>
+          <div>
+            <a className="btn navbar-button" href="/login">
+              Login
+            </a>
+            <a className="btn navbar-button ml-3" href="">
+              Register
+            </a>
+          </div>
+        </div>
+      </nav>
+      <div className="container my-5 py-5">
+        <div className="row">
+          <div className="col-md-6 offset-md-3">
+            <div className="card form-container">
+              <div className="card-body">
+                <ul className="nav nav-tabs" id="registerTab" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      id="doctorregister-tab"
+                      data-toggle="tab"
+                      href="#doctorregister"
+                      role="tab"
+                      aria-controls="doctorregister"
+                      aria-selected="true"
+                    >
+                      Doctor
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      id="patientregister-tab"
+                      data-toggle="tab"
+                      href="#patientregister"
+                      role="tab"
+                      aria-controls="patientregister"
+                      aria-selected="false"
+                    >
+                      Patient
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content" id="registerTabContent">
+                  <div
+                    className="tab-pane fade show active"
+                    id="doctorregister"
+                    role="tabpanel"
+                    aria-labelledby="doctorregister-tab"
                   >
-                    Doctor
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    id="patient-tab"
-                    data-toggle="tab"
-                    href="#patient"
-                    role="tab"
-                    aria-controls="patient"
-                    aria-selected="false"
+                    <Doctor {...props} />
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="patientregister"
+                    role="tabpanel"
+                    aria-labelledby="patientregister-tab"
                   >
-                    Patient
-                  </a>
-                </li>
-              </ul>
-              <div className="tab-content" id="registerTabContent">
-                <div
-                  className="tab-pane fade show active"
-                  id="doctor"
-                  role="tabpanel"
-                  aria-labelledby="doctor-tab"
-                >
-                  <Doctor />
-                </div>
-                <div
-                  className="tab-pane fade"
-                  id="patient"
-                  role="tabpanel"
-                  aria-labelledby="patient-tab"
-                >
-                  <Patient />
+                    <Patient {...props} />
+                  </div>
                 </div>
               </div>
             </div>

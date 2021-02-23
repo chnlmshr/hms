@@ -1,61 +1,30 @@
-const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const _ = require("lodash");
-mongoose.Promise = global.Promise;
-const app = express();
-const cors = require("cors");
+const express = require("express"),
+  bodyParser = require("body-parser"),
+  mongoose = require("mongoose"),
+  cors = require("cors"),
+  app = express();
 
-var conn = mongoose.Connection;
-//connect to mongodb
-mongoose.connect(
-  "mongodb+srv://hms:bluebloodsnowman@cluster0.wlz7l.mongodb.net/hms?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true }
-);
+require("dotenv").config();
 
-//on connection
-mongoose.connection.on("connected", () => {
-  console.log("connected to database mongodb ");
-});
-mongoose.connection.on("error", (err) => {
-  if (err) {
-    console.log("error in database connection: " + err);
-  }
-});
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200,
-    credentials: true,
-    allowedHeaders: "Content-Type,authorization",
-    preflightContinue: true,
-  })
-);
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "static")));
+app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 9999;
+mongoose
+  .connect(process.env.DB_URL, {
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  })
+  .then(() => console.log("DB is up"))
+  .catch((err) => console.log(err));
 
-app.listen(9999, () => {
-  console.log("Server up at 9999");
+app.listen(process.env.PORT || 9999, () => {
+  console.log("Server is up");
 });
 
-const DocRoute = require("./routes/doctor");
-const PatRoute = require("./routes/patient");
-const VerifyDoc = require("./routes/verifyDoc");
-const VerifyPat = require("./routes/verifyPat");
-const Disease = require("./routes/disease");
-const authenticateRoute = require("./routes/authentication");
-const settings = require("./routes/settings");
-
-app.use("/api", DocRoute);
-app.use("/api", PatRoute);
-app.use("/api", VerifyDoc);
-app.use("/api", VerifyPat);
-app.use("/api", Disease);
-app.use("/api", authenticateRoute);
-app.use("/api", settings);
+app.use("/api", require("./routes/authentication"));
+app.use("/api", require("./routes/dashboard"));
+app.use("/api", require("./routes/disease"));
+app.use("/api", require("./routes/settings"));

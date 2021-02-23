@@ -1,28 +1,61 @@
 import { Home } from "../components/Home";
-import { PatientDashboard } from "../components/patient/Dashboard";
-import { PatientAccount } from "../components/patient/Account";
+import { PatientDashboard, DoctorDashboard } from "../components/Dashboard";
+import { PatientAccount, DoctorAccount } from "../components/Account";
 import PageNotFound from "../components/NotFound";
+import { Login } from "../components/Login";
+import { Register } from "../components/Register";
+import { ChangePassword } from "../components/ChangePassword";
 
 const routes = [
   {
     path: "/patient",
     component: PatientDashboard,
-    isPrivate: true,
+    type: "patient",
+  },
+  {
+    path: "/doctor",
+    component: DoctorDashboard,
+    type: "doctor",
   },
   {
     path: "/patient/account",
     component: PatientAccount,
-    isPrivate: true,
+    type: "patient",
+  },
+  {
+    path: "/doctor/account",
+    component: DoctorAccount,
+    type: "doctor",
+  },
+  {
+    path: "/patient/changepassword",
+    component: ChangePassword,
+    type: "patient",
+  },
+  {
+    path: "/doctor/changepassword",
+    component: ChangePassword,
+    type: "doctor",
   },
   {
     path: "/",
     component: Home,
-    isPrivate: false,
+    type: "",
+  },
+  {
+    path: "/login",
+    component: Login,
+    type: "",
+  },
+  {
+    path: "/register",
+    component: Register,
+    type: "",
   },
   {
     path: "/*",
     component: PageNotFound,
-    isPrivate: true,
+    type: "",
   },
 ];
 

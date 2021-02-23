@@ -1,103 +1,86 @@
-const Patient = require("../models/patients");
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const emailValidator = require("email-validator");
-const expressValidator = require("express-validator");
+const Patient = require("../models/Patient"),
+  bcrypt = require("bcryptjs"),
+  jwt = require("jsonwebtoken");
 
-function registerPat(req, res, next) {
-  var name = req.body.name;
-  var email = req.body.email;
-  var password = req.body.password;
-  var confirmPassword = req.body.confirmpassword;
-
-  if (emailValidator.validate(email)) {
-    console.log("valid email");
-    Patient.findOne({ email }).then((patient) => {
-      if (patient) {
-        return res.send("Already registered");
-      } else {
-        if (password !== confirmPassword) {
-          res.json({
-            message: "Password not matched",
-          });
-        } else {
-          bcrypt.hash(password, 10, function (err, hashedPass) {
-            if (err) {
-              res.json({
-                message: "something went wrong!",
-                error: err,
-              });
-            } else {
-              //console.log(hash);
-              let patient = new Patient({
-                name: name,
-                email: email,
-                password: hashedPass,
-                confirmpassword: confirmPassword,
-                phone: req.body.phone,
-                age: req.body.age,
-              });
-
-              patient
-                .save()
-                .then((patient) => {
-                  res.status(201).json({
-                    message: "Patient Added Succefully",
-                    results: patient,
-                  });
-                })
-                .catch((error) => {
-                  res.json({
-                    message: "An error Occured!",
-                    results: error,
-                  });
-                });
-            }
-          });
-        }
-      }
+function registerPat(req, res) {
+  if (req.body.password !== req.body.confirmpassword) {
+    res.send({
+      err: "Password and Confirm Password doesn't match!",
     });
   } else {
-    res.json({
-      message: "enter valid email!",
+    bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
+      if (err) {
+        res.send({
+          err: "Something went wrong!",
+        });
+      } else {
+        let patient = new Patient({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPass,
+          phone: req.body.phone,
+          age: req.body.age,
+          sex: req.body.sex,
+        });
+        patient
+          .save()
+          .then((patient) => {
+            let token = jwt.sign({ _id: patient._id }, process.env.JWT_SECRET);
+            if (token)
+              res.send({
+                token: token,
+                patient: true,
+              });
+            else
+              res.send({
+                err: "Something went wrong!",
+              });
+          })
+          .catch((error) => {
+            res.send({
+              err: "Something went wrong!",
+            });
+          });
+      }
     });
   }
 }
 
-const loginPat = (req, res, next) => {
-  var username = req.body.username;
-  var password = req.body.password;
-
-  Patient.findOne({ $or: [{ email: username }, { phone: username }] }).then(
-    (patient) => {
-      if (patient) {
-        bcrypt.compare(password, patient.password, function (err, result) {
+const loginPat = (req, res) => {
+  Patient.findOne({ email: req.body.email }).then((patient) => {
+    if (patient) {
+      bcrypt.compare(
+        req.body.password,
+        patient.password,
+        function (err, result) {
           if (err) {
-            return res.json({
-              error: err,
-              message: "err in comparing hash",
+            res.send({
+              err: "Something went wrong!",
             });
-          }
-          if (result) {
-            let token = jwt.sign({ _id: patient._id }, "verySecretValue");
-            return res.json({
-              meassage: "Login Successful",
-              token: token,
-            });
+          } else if (result) {
+            let token = jwt.sign({ _id: patient._id }, process.env.JWT_SECRET);
+            if (token)
+              res.send({
+                token: token,
+                patient: true,
+              });
+            else
+              res.send({
+                err: "Something went wrong!",
+              });
           } else {
-            return res.json({
-              message: "Password does not matched",
+            res.send({
+              err: "Email or passwoord is Wrong!",
             });
           }
-        });
-      } else {
-        return res.json({
-          message: "No user patient found!",
-        });
-      }
+        }
+      );
+    } else {
+      res.send({
+        err: "Email or passwoord is Wrong!",
+      });
     }
-  );
+  });
 };
 
 module.exports = {

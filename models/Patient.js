@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-var { scoreOfDisease, Disease } = require("./diseases");
+const { scoreOfDisease, Disease } = require("./Disease");
+
 const PatientSchema = mongoose.Schema({
   name: {
     type: String,
@@ -8,9 +9,7 @@ const PatientSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    index: {
-      unique: true,
-    },
+    unique: true,
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   password: {
@@ -26,20 +25,17 @@ const PatientSchema = mongoose.Schema({
     required: true,
   },
   address: {
+    custom: String,
     city: String,
-    street: String,
-    houseNumber: String,
-    zip: Number,
     state: String,
+    zip: Number,
   },
   blood_group: {
     type: String,
-    required: false,
   },
   allergies: [
     {
       type: String,
-      required: true,
     },
   ],
   diseases: {
@@ -47,11 +43,8 @@ const PatientSchema = mongoose.Schema({
     default: [],
   },
   sex: {
-    // true = male
-    // false = female
-    type: Boolean,
+    type: String,
     required: true,
-    default: true,
   },
   score: {
     type: Number,
@@ -61,7 +54,7 @@ const PatientSchema = mongoose.Schema({
     type: Number,
   },
   date: {
-    type: Date,
+    type: Number,
     default: Math.round(Date.now() / 1000),
   },
 });
@@ -111,4 +104,4 @@ PatientSchema.methods.updateScore = function () {
     });
 };
 
-const Patient = (module.exports = mongoose.model("Patients", PatientSchema));
+module.exports = mongoose.model("Patient", PatientSchema);
