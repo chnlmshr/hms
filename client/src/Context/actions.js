@@ -114,10 +114,13 @@ export async function fetchPatient(dispatch, token) {
     let data = await response.json();
     if (data.patient) {
       dispatch({ type: "PATIENT_FETCH_SUCCESS", payload: data });
+      localStorage.setItem("username", data.patient.name);
       return data.patient;
-    } else { return {err: true} }
+    } else {
+      return { err: true };
+    }
   } catch (error) {
-    return {err: true}
+    return { err: true };
   }
 }
 
@@ -136,11 +139,13 @@ export async function fetchDoctor(dispatch, token) {
 
     if (data.doctor) {
       dispatch({ type: "DOCTOR_FETCH_SUCCESS", payload: data });
+      localStorage.setItem("username", data.doctor.name);
       return data.doctor;
-    } else {return {err: true}}
-    return;
+    } else {
+      return { err: true };
+    }
   } catch (error) {
-    return {err: true}
+    return { err: true };
   }
 }
 
@@ -148,6 +153,7 @@ export async function logout(dispatch) {
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("currentUser");
   localStorage.removeItem("token");
+  localStorage.removeItem("username");
 }
 
 export async function changePassword(dispatch, passwordPayload) {
@@ -171,5 +177,28 @@ export async function changePassword(dispatch, passwordPayload) {
     return;
   } catch (error) {
     dispatch({ type: "CHANGE_PASSWORD_ERROR", error: "Something went wrong" });
+  }
+}
+
+export async function updateAccount(dispatch, updatePayload) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatePayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_UPDATE_ACCOUNT" });
+    let response = await fetch(
+      `${ROOT_URL}/api/update${updatePayload.token.split(" ")[0]}account`,
+      requestOptions
+    );
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "UPDATE_ACCOUNT_SUCCESS", payload: data });
+    } else dispatch({ type: "UPDATE_ACCOUNT_ERROR" });
+    return data;
+  } catch (error) {
+    dispatch({ type: "UPDATE_ACCOUNT_ERROR" });
   }
 }

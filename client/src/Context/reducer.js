@@ -99,6 +99,24 @@ export const AuthReducer = (initialState, action) => {
         errorMessage: action.error,
       };
 
+    case "REQUEST_UPDATE_ACCOUNT":
+      return {
+        ...initialState,
+        loading: true,
+      };
+
+    case "UPDATE_ACCOUNT_SUCCESS":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "UPDATE_ACCOUNT_ERROR":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }

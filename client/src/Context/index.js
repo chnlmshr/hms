@@ -7,6 +7,7 @@ import {
   fetchDoctor,
   fetchPatient,
   changePassword,
+  updateAccount
 } from "./actions";
 import { AuthProvider, useAuthDispatch, useAuthState } from "./context";
 
@@ -22,4 +23,5 @@ export {
   fetchDoctor,
   fetchPatient,
   changePassword,
+  updateAccount
 };

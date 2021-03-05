@@ -12,18 +12,16 @@ import {
 
 export const PatientDashboard = (props) => {
   const { token } = useAuthState(),
-    dispatch = useAuthDispatch(),
-    [state, setState] = useState({ name: "" });
+    dispatch = useAuthDispatch();
 
   useEffect(async () => {
     const data = await fetchPatient(dispatch, token);
     if (data.err) logout(dispatch);
-    else setState({ ...data });
   }, []);
 
   return (
     <div>
-      <Navigation homelink="/patient" username={state.name} />
+      <Navigation homelink="/patient" />
       <div className="container">
         <div className="row m-3">
           <div className="col-md-4">

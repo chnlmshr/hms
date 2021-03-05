@@ -1,5 +1,5 @@
 const Doctor = require("../models/Doctor");
-
+const Room = require("../models/Rooms");
 const Patient = require("../models/Patient"),
   jwt = require("jsonwebtoken"),
   bcrypt = require("bcryptjs"),
@@ -40,7 +40,7 @@ router.post("/changepassword", (req, res) => {
                       payload._id,
                       {
                         password: hashedPass,
-                        date: Math.round(Date.now() / 1000),
+                        date: Math.round(Date.now() / 1000)
                       },
                       (err, patient) => {
                         if (err || !patient) {
@@ -85,7 +85,7 @@ router.post("/changepassword", (req, res) => {
                       payload._id,
                       {
                         password: hashedPass,
-                        date: Math.round(Date.now() / 1000),
+                        date: Math.round(Date.now() / 1000)
                       },
                       (err, doctor) => {
                         if (err || !doctor) {
@@ -118,4 +118,91 @@ router.post("/changepassword", (req, res) => {
   });
 });
 
+router.post("/accountinfo", (req, res) => {
+  const token = req.body.token.split(" ")[1];
+  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+    if (err || !payload) {
+      res.send({ err: "Something went wrong!" });
+    } else {
+      const email = req.body.email;
+      const phone = req.body.phone;
+      const sex = req.body.sex;
+      const address = req.body.address;
+      const allergies = req.body.allergies;
+      const blood_group = req.body.blood_group;
+
+      // GET form attributes
+      var PD = req.body.PD;
+      if (_.isEmpty(PD)) {
+        PD = [];
+      }
+
+      Patient.findAllAndUpdate(
+        {
+          email
+        },
+        {
+          phone
+        },
+        {
+          sex
+        },
+        {
+          address
+        },
+        {
+          allergies
+        },
+        {
+          blood_group
+        },
+        {
+          $set: {
+            diseases: PD,
+            lastUpdate: new Date().getTime()
+          }
+        },
+        {
+          new: true
+        }
+      )
+        .then((patient) => {
+          patient.updateScore();
+          res.send({ success: true });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.send({ success: false });
+        });
+    }
+  });
+});
+//
+router.get("/deletepatient", (req, res) => {
+  var email = req.params.email;
+
+  Promise.all([Room.find({}), Patient.findOne({ email: email })])
+    .then((data) => {
+      var rooms = data[0];
+      var patient = data[1];
+
+      // if the patient is in a room, make the room empty
+      if (patient.room !== "noroom") {
+        for (var i = 0; i < rooms.length; ++i) {
+          if (rooms[i].name === patient.room) {
+            rooms[i].availability = false;
+            rooms[i].save();
+            break;
+          }
+        }
+      }
+
+      patient.remove().then((patients) => {
+        res.status(200).redirect("/api");
+      });
+    })
+    .catch((err) => {
+      res.status(400).redirect("/api");
+    });
+});
 module.exports = router;
