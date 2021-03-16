@@ -68,7 +68,7 @@ export const AuthReducer = (initialState, action) => {
     case "PATIENT_FETCH_SUCCESS":
       return {
         ...initialState,
-        patient: action.payload.patient,
+        patient: action.payload,
       };
 
     case "DOCTOR_FETCH_SUCCESS":
@@ -112,6 +112,24 @@ export const AuthReducer = (initialState, action) => {
       };
 
     case "UPDATE_ACCOUNT_ERROR":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "REQUEST_RECEPTION":
+      return {
+        ...initialState,
+        loading: true,
+      };
+
+    case "RECEPTION_SUCCESS":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "RECEPTION_ERROR":
       return {
         ...initialState,
         loading: false,

@@ -1,6 +1,6 @@
 import { Navigation } from "./Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClinicMedical } from "@fortawesome/free-solid-svg-icons";
+import { faClinicMedical, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import {
   fetchDoctor,
@@ -12,30 +12,31 @@ import {
 
 export const PatientDashboard = (props) => {
   const { token } = useAuthState(),
-    dispatch = useAuthDispatch();
-
+    dispatch = useAuthDispatch(),
+    [state, setState] = useState({name: ""})
   useEffect(async () => {
     const data = await fetchPatient(dispatch, token);
     if (data.err) logout(dispatch);
+    setState({name: data.name})
   }, []);
 
   return (
     <div>
-      <Navigation homelink="/patient" />
+      <Navigation homelink="/patient" username={state.name}/>
       <div className="container">
         <div className="row m-3">
           <div className="col-md-4">
             <div className="card text-center">
               <div className="card-body">
                 <h1 className="card-title dashboard-icon">
-                  <FontAwesomeIcon icon={faClinicMedical} size="3x" />
+                  <FontAwesomeIcon icon={faUserEdit} size="3x" />
                 </h1>
                 <a
-                  href="#"
+                  href="/reception"
                   className="card-link"
                   style={{ color: "brow m-3n" }}
                 >
-                  Kuchh
+                  Reception
                 </a>
               </div>
             </div>

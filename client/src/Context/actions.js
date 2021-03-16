@@ -113,8 +113,14 @@ export async function fetchPatient(dispatch, token) {
     let response = await fetch(`${ROOT_URL}/api/patient`, requestOptions);
     let data = await response.json();
     if (data.patient) {
-      dispatch({ type: "PATIENT_FETCH_SUCCESS", payload: data });
-      localStorage.setItem("username", data.patient.name);
+      dispatch({ type: "PATIENT_FETCH_SUCCESS", payload: data.patient });
+      if (localStorage.getItem("currentUser").length < 180)
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify(data.patient).slice(0, -1) +
+            "," +
+            localStorage.getItem("currentUser").slice(1)
+        );
       return data.patient;
     } else {
       return { err: true };
@@ -200,5 +206,47 @@ export async function updateAccount(dispatch, updatePayload) {
     return data;
   } catch (error) {
     dispatch({ type: "UPDATE_ACCOUNT_ERROR" });
+  }
+}
+
+export async function reception(dispatch, receptionPayload) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(receptionPayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_RECEPTION" });
+    let response = await fetch(`${ROOT_URL}/api/reception`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "RECEPTION_SUCCESS" });
+    } else dispatch({ type: "RECEPTION_ERROR" });
+    return data;
+  } catch (error) {
+    dispatch({ type: "RECEPTION_ERROR" });
+  }
+}
+
+export async function chooseDoctor(dispatch, token) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "patient " + token,
+    },
+  };
+
+  try {
+    dispatch({ type: "REQUEST_CHOOSE_DOCTOR" });
+    let response = await fetch(`${ROOT_URL}/api/chooseDoctor`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "CHOOSE_DOCTOR_SUCCESS" });
+    } else dispatch({ type: "CHOOSE_DOCTORS_ERROR" });
+    return data;
+  } catch (error) {
+    dispatch({ type: "CHOOSE_DOCTORS_ERROR" });
   }
 }

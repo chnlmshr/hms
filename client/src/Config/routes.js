@@ -5,6 +5,7 @@ import PageNotFound from "../components/NotFound";
 import { Login } from "../components/Login";
 import { Register } from "../components/Register";
 import { ChangePassword } from "../components/ChangePassword";
+import { Reception } from "../components/Reception";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
   {
     path: "/patient/account",
     component: PatientAccount,
+    type: "patient",
+  },
+  {
+    path: "/reception",
+    component: Reception,
     type: "patient",
   },
   {

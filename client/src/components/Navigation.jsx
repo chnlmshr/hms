@@ -45,7 +45,9 @@ export const Navigation = (props) => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Hi, {localStorage.getItem("username")}
+            Hi,{" "}
+            {props.username ||
+              JSON.parse(localStorage.getItem("currentUser")).name}
           </a>
           <div
             className="dropdown-menu dropdown-menu-right"
