@@ -29,7 +29,7 @@ const DoctorSchema = mongoose.Schema({
   },
   speciality:{
     type:String,
-    required: true,
+    required: true, 
   }
 });
 
