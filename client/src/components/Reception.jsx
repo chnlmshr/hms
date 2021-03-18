@@ -18,6 +18,7 @@ export const Reception = (props) => {
       allergies: allergies,
       complications: "",
       errorMessage: "",
+      department: "Department",
     },
     [state, setState] = useState(initialState);
 
@@ -123,6 +124,32 @@ export const Reception = (props) => {
                           placeholder="Allergies"
                         />
                       </div>
+                      <div class="input-group mb-3">
+                        <select
+                          name="department"
+                          class="custom-select"
+                          value={state.value}
+                          onChange={handleOnChange}
+                        >
+                          <option value="Department">Department</option>
+                          <option value="Dentist">Dentist</option>
+                          <option value="ENT">ENT(Ear Nose Throat)</option>
+                          <option value="Gynecology">
+                            Gynecology(Female eproductive System)
+                          </option>
+                          <option value="Cardiology">Cardiology(Heart)</option>
+                          <option value="Pulmonogy">Pulmonogy(Lungs)</option>
+                          <option value="Neprology">Neprology(Kidney)</option>
+                          <option value="Neurology">
+                            Neurology(Nervous System)
+                          </option>
+                          <option value="Oncology">Oncology(Cancer)</option>
+                          <option value="Orthopaedics">
+                            Orthopaedics(Bones)
+                          </option>
+                          <option value="Dermatology">Dermatology(Skin)</option>
+                        </select>
+                      </div>
                       <div className="form-group">
                         <input
                           type="text"
@@ -131,7 +158,7 @@ export const Reception = (props) => {
                           aria-describedby="error"
                           value={state.complications}
                           onChange={handleOnChange}
-                          placeholder="Complications"
+                          placeholder="Complication Description"
                         />
                         <small id="error" className="form-text">
                           {state.errorMessage}
