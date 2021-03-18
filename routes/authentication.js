@@ -40,7 +40,7 @@ router.post("/changepassword", (req, res) => {
                       payload._id,
                       {
                         password: hashedPass,
-                        date: Math.round(Date.now() / 1000)
+                        date: Math.round(Date.now() / 1000),
                       },
                       (err, patient) => {
                         if (err || !patient) {
@@ -85,7 +85,7 @@ router.post("/changepassword", (req, res) => {
                       payload._id,
                       {
                         password: hashedPass,
-                        date: Math.round(Date.now() / 1000)
+                        date: Math.round(Date.now() / 1000),
                       },
                       (err, doctor) => {
                         if (err || !doctor) {
@@ -118,7 +118,7 @@ router.post("/changepassword", (req, res) => {
   });
 });
 
-router.post("/accountinfo", (req, res) => {
+router.post("/updatepatientaccount", (req, res) => {
   const token = req.body.token.split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
     if (err || !payload) {
@@ -126,45 +126,43 @@ router.post("/accountinfo", (req, res) => {
     } else {
       const email = req.body.email;
       const phone = req.body.phone;
-      const sex = req.body.sex;
-      const address = req.body.address;
+      // const sex = req.body.sex;
+      const customaddress = req.body.customaddress;
       const allergies = req.body.allergies;
-      const blood_group = req.body.blood_group;
+      const blood_group = req.body.bloodgroup;
+      const zip = req.body.zip;
+      const city = req.body.city;
+      const state = req.body.state;
 
       // GET form attributes
-      var PD = req.body.PD;
-      if (_.isEmpty(PD)) {
-        PD = [];
-      }
+      // var PD = req.body.PD;
+      // if (_.isEmpty(PD)) {
+      //   PD = [];
+      // }
 
-      Patient.findAllAndUpdate(
+      Patient.findByIdAndUpdate(
+        payload._id,
         {
-          email
-        },
-        {
-          phone
-        },
-        {
-          sex
-        },
-        {
-          address
-        },
-        {
-          allergies
-        },
-        {
-          blood_group
-        },
-        {
-          $set: {
-            diseases: PD,
-            lastUpdate: new Date().getTime()
-          }
-        },
-        {
-          new: true
+          email: email,
+          phone: phone,
+          address: {
+            custom: customaddress,
+            city: city,
+            zip: zip,
+            state: state,
+          },
+          allergies: allergies,
+          blood_group: blood_group,
         }
+        // {
+        //   $set: {
+        //     diseases: PD,
+        //     lastUpdate: new Date().getTime(),
+        //   },
+        // },
+        // {
+        //   new: true,
+        // }
       )
         .then((patient) => {
           patient.updateScore();
@@ -205,4 +203,4 @@ router.get("/deletepatient", (req, res) => {
       res.status(400).redirect("/api");
     });
 });
-module.exports = router;
+module.exports = router

@@ -39,8 +39,9 @@ export async function loginPatient(dispatch, loginPayload) {
     let response = await fetch(`${ROOT_URL}/api/loginPatient`, requestOptions);
     let data = await response.json();
     if (data.patient) {
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
       localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+      
       return data;
     } else dispatch({ type: "LOGIN_ERROR", error: data.err });
     return;
