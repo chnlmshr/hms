@@ -41,6 +41,7 @@ export async function loginPatient(dispatch, loginPayload) {
     if (data.patient) {
       localStorage.setItem("currentUser", JSON.stringify(data));
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
+
       return data;
     } else dispatch({ type: "LOGIN_ERROR", error: data.err });
     return;

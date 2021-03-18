@@ -203,4 +203,4 @@ router.get("/deletepatient", (req, res) => {
       res.status(400).redirect("/api");
     });
 });
-module.exports = router;
+module.exports = router
