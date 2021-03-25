@@ -49,3 +49,12 @@
 .dashboard-icon {
   color: #5398ba;
 }
+
+.choose-doc-card {
+  border-radius: 10px;
+  border: 2px solid #ccc5c5;
+}
+
+.choose-doc-card:hover {
+  border: 2px solid #747474;
+}

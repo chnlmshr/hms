@@ -241,13 +241,13 @@ export async function chooseDoctor(dispatch, token) {
 
   try {
     dispatch({ type: "REQUEST_CHOOSE_DOCTOR" });
-    let response = await fetch(`${ROOT_URL}/api/chooseDoctor`, requestOptions);
+    let response = await fetch(`${ROOT_URL}/api/choosedoctor`, requestOptions);
     let data = await response.json();
     if (Boolean(data.success)) {
       dispatch({ type: "CHOOSE_DOCTOR_SUCCESS" });
-    } else dispatch({ type: "CHOOSE_DOCTORS_ERROR" });
+    } else dispatch({ type: "CHOOSE_DOCTOR_ERROR" });
     return data;
   } catch (error) {
-    dispatch({ type: "CHOOSE_DOCTORS_ERROR" });
+    dispatch({ type: "CHOOSE_DOCTOR_ERROR" });
   }
 }

@@ -6,6 +6,7 @@ import { Login } from "../components/Login";
 import { Register } from "../components/Register";
 import { ChangePassword } from "../components/ChangePassword";
 import { Reception } from "../components/Reception";
+import ChooseDoctor from "../components/ChooseDoctor";
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
   {
     path: "/reception",
     component: Reception,
+    type: "patient",
+  },
+  {
+    path: "/choosedoctor",
+    component: ChooseDoctor,
     type: "patient",
   },
   {

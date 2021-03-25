@@ -124,10 +124,10 @@ export const Reception = (props) => {
                           placeholder="Allergies"
                         />
                       </div>
-                      <div class="input-group mb-3">
+                      <div className="input-group mb-3">
                         <select
                           name="department"
-                          class="custom-select"
+                          className="custom-select"
                           value={state.value}
                           onChange={handleOnChange}
                         >

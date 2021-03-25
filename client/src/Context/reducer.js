@@ -135,6 +135,22 @@ export const AuthReducer = (initialState, action) => {
         loading: false,
       };
 
+    case "REQUEST_CHOOSE_DOCTOR":
+      return {
+        ...initialState,
+        loading: true,
+      };
+    case "CHOOSE_DOCTOR_SUCCESS":
+      return {
+        ...initialState,
+        loading: false,
+      };
+    case "CHOOSE_DOCTOR_ERROR":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
