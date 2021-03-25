@@ -11,10 +11,12 @@ router.post("/reception",(req,res)=>{
       else 
       {
     var complications=req.body.complications
+    var speciality=req.body.speciality
     Reception.create(
         
         {
             complications:complications,
+            speciality:speciality,
             patient:payload._id,
         }
       )
