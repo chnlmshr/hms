@@ -34,27 +34,27 @@ const ChooseDoctor = (props) => {
 
   useEffect(async () => {
     let data = await chooseDoctor(dispatch, token);
-    // data = {
-    //   success: true,
-    //   foundspeciality: true,
-    //   doctors: [
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //   ],
-    // };
+    data = {
+      success: true,
+      foundspeciality: true,
+      doctors: [
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+        },
+      ],
+    };
     if (data.success) {
       if (data.foundspeciality) {
         setState({

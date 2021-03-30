@@ -11,25 +11,36 @@ router.get('/choosedoctor',(req,res)=>{
       else 
       {   
           Reception.findOne({patient:payload._id},(err,patient)=>{
-            Doctor.find({speciality:patient.speciality}, null, { sort: { name: 1 } })
-            .select(["-password", "-_id","-email","-phone","-date"])
-            .then((doctors)=>{
-                  if (err)
+              if(!patient.speciality)
+              {
                   res.send({
-                    err: true,
-                  });
-                  else {
-                      console.log(doctors)
+                      success:true,
+                      speciality:false
+                  })
+              }
+              else {
+                Doctor.find({speciality:patient.speciality}, null, { sort: { name: 1 } })
+                .select(["-password", "-_id","-email","-phone","-date"])
+                .then((doctors)=>{
+                      if (err)
                       res.send({
-                          success: true,
-                          doctors:doctors
-                      })
-                  }
-               })
-               .catch((err) => {
-                console.log(err);
-                res.send({ success: false });
-              });
+                        err: true,
+                      });
+                      else {
+                          console.log(doctors)
+                          res.send({
+                              success: true,
+                              doctors:doctors
+                          })
+                      }
+                   })
+                   .catch((err) => {
+                    console.log(err);
+                    res.send({ success: false });
+                  });
+
+              }
+            
 
           })
 

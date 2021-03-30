@@ -16,8 +16,8 @@ export async function registerPatient(dispatch, registerPayload) {
     let data = await response.json();
 
     if (data.patient) {
-      dispatch({ type: "REGISTER_SUCCESS", payload: data });
       localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "REGISTER_SUCCESS", payload: data });
       return data;
     }
     dispatch({ type: "REGISTER_ERROR", error: data.err });
