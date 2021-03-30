@@ -86,7 +86,7 @@ const ChooseDoctor = (props) => {
           _id: "fuefhf3273738ye3ye7732h7387",
         },
         {
-          name: "Dr. Someone",
+          name: "Dr. Aditya",
           degree: "MBBS",
           speciality: "Ear Nose Throat(ENT)",
           _id: "fuefhf3273738ye3ye7732h7387",
