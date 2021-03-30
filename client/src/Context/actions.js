@@ -251,3 +251,48 @@ export async function chooseDoctor(dispatch, token) {
     dispatch({ type: "CHOOSE_DOCTOR_ERROR" });
   }
 }
+
+export async function visit(dispatch, payload) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_VISIT" });
+    let response = await fetch(`${ROOT_URL}/api/visit`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      localStorage.setItem("visitingInfo", JSON.stringify(data));
+      dispatch({ type: "VISIT_SUCCESS" });
+    } else dispatch({ type: "VISIT_ERROR" });
+    return data;
+  } catch (error) {
+    dispatch({ type: "VISIT_ERROR" });
+  }
+}
+
+export async function report(dispatch, token) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "patient " + token,
+    },
+  };
+
+  try {
+    dispatch({ type: "REQUEST_REPORT" });
+    let response = await fetch(`${ROOT_URL}/api/report`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "REPORT_SUCCESS" });
+    } else dispatch({ type: "REPORT_ERROR" });
+    return data;
+  } catch (error) {
+    dispatch({ type: "REPORT_ERROR" });
+  }
+}
