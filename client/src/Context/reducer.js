@@ -151,6 +151,42 @@ export const AuthReducer = (initialState, action) => {
         loading: false,
       };
 
+    case "REQUEST_VISIT":
+      return {
+        ...initialState,
+        loading: true,
+      };
+
+    case "VISIT_SUCCESS":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "VISIT_ERROR":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "REQUEST_REPORT":
+      return {
+        ...initialState,
+        loading: true,
+      };
+
+    case "REPORT_SUCCESS":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
+    case "REPORT_ERROR":
+      return {
+        ...initialState,
+        loading: false,
+      };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }

@@ -7,6 +7,8 @@ import { Register } from "../components/Register";
 import { ChangePassword } from "../components/ChangePassword";
 import { Reception } from "../components/Reception";
 import ChooseDoctor from "../components/ChooseDoctor";
+import Visit from "../components/Visit";
+import Report from "../components/Report";
 
 const routes = [
   {
@@ -32,6 +34,16 @@ const routes = [
   {
     path: "/choosedoctor",
     component: ChooseDoctor,
+    type: "patient",
+  },
+  {
+    path: "/visit",
+    component: Visit,
+    type: "patient",
+  },
+  {
+    path: "/report",
+    component: Report,
     type: "patient",
   },
   {

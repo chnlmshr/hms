@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { useAuthDispatch, useAuthState } from "../Context";
-import { chooseDoctor } from "../Context/actions";
+import { chooseDoctor, visit } from "../Context/actions";
 import { Navigation } from "./Navigation";
 
-const DoctorCard = ({ name, degree, speciality }) => {
+const DoctorCard = (props) => {
+  const dispatch = useAuthDispatch(),
+    { token, loading } = useAuthState();
+  const onClickHandler = () => {
+    let data = visit(dispatch, { token: token, id: props.id });
+    data = { success: true };
+    if (data && data.success) props.PROPS.history.push("/visit");
+  };
   return (
     <div className="row mt-3 p-3 choose-doc-card">
       <div className="col-4">
-        <div className="doc-name">{name}</div>
+        <div className="doc-name">{props.name}</div>
       </div>
       <div className="col-4">
-        <div className="doc-degree">{degree}</div>
-        <div className="doc-speciality">{speciality}</div>
+        <div className="doc-degree">{props.degree}</div>
+        <div className="doc-speciality">{props.speciality}</div>
       </div>
       <div className="col-2 offset-2">
-        <a href="#" className="btn btn-primary">
+        <button
+          className="btn btn-primary"
+          onClick={onClickHandler}
+          disabled={loading}
+        >
           Visit
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -34,27 +45,60 @@ const ChooseDoctor = (props) => {
 
   useEffect(async () => {
     let data = await chooseDoctor(dispatch, token);
-    // data = {
-    //   success: true,
-    //   foundspeciality: true,
-    //   doctors: [
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //     },
-    //   ],
-    // };
+    data = {
+      success: true,
+      foundspeciality: true,
+      doctors: [
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+        {
+          name: "Dr. Someone",
+          degree: "MBBS",
+          speciality: "Ear Nose Throat(ENT)",
+          _id: "fuefhf3273738ye3ye7732h7387",
+        },
+      ],
+    };
     if (data.success) {
       if (data.foundspeciality) {
         setState({
@@ -83,9 +127,12 @@ const ChooseDoctor = (props) => {
             <div className="col-md-8 offset-md-2">
               {state.doctors.map((doctor) => (
                 <DoctorCard
+                  key={doctor}
                   name={doctor.name}
                   degree={doctor.degree}
                   speciality={doctor.speciality}
+                  id={doctor._id}
+                  PROPS={props}
                 />
               ))}
             </div>
