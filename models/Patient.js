@@ -64,49 +64,49 @@ const PatientSchema = mongoose.Schema({
   }
 });
 
-PatientSchema.methods.updateScore = function () {
-  var patient = this;
+// PatientSchema.methods.updateScore = function () {
+//   var patient = this;
 
-  // promise to get the patient object inside the diseases callback
-  var promise = new Promise(function (resolve, reject) {
-    resolve(patient);
-    reject(patient);
-  });
+//   // promise to get the patient object inside the diseases callback
+//   var promise = new Promise(function (resolve, reject) {
+//     resolve(patient);
+//     reject(patient);
+//   });
 
-  Promise.all([
-    promise.then(function (patient) {
-      return patient;
-    }),
-    Disease.find({})
-  ])
-    .then((data) => {
-      var patient = data[0];
-      var diseases = data[1];
+//   Promise.all([
+//     promise.then(function (patient) {
+//       return patient;
+//     }),
+//     Disease.find({})
+//   ])
+//     .then((data) => {
+//       var patient = data[0];
+//       var diseases = data[1];
 
-      var scoreOfDisease = {};
-      var score = 0;
+//       var scoreOfDisease = {};
+//       var score = 0;
 
-      if (!_.isEmpty(diseases) && _.isArray(diseases)) {
-        // create a hashmap with the diseases and their scores
-        for (var i = 0; i < diseases.length; ++i) {
-          scoreOfDisease[diseases[i].name] = diseases[i].score;
-        }
+//       if (!_.isEmpty(diseases) && _.isArray(diseases)) {
+//         // create a hashmap with the diseases and their scores
+//         for (var i = 0; i < diseases.length; ++i) {
+//           scoreOfDisease[diseases[i].name] = diseases[i].score;
+//         }
 
-        for (var i = 0; i < patient.diseases.length; ++i) {
-          if (scoreOfDisease[patient.diseases[i]] > score) {
-            score = scoreOfDisease[patient.diseases[i]];
-          }
-        }
-      }
+//         for (var i = 0; i < patient.diseases.length; ++i) {
+//           if (scoreOfDisease[patient.diseases[i]] > score) {
+//             score = scoreOfDisease[patient.diseases[i]];
+//           }
+//         }
+//       }
 
-      patient.score = score;
-      patient.save().catch((err) => {
-        console.log(err);
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+//       patient.score = score;
+//       patient.save().catch((err) => {
+//         console.log(err);
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 
 module.exports = mongoose.model("Patient", PatientSchema);
