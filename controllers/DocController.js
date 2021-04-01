@@ -19,6 +19,7 @@ function registerDoc(req, res) {
           email: req.body.email,
           password: hashedPass,
           phone: req.body.phone,
+          speciality: req.body.speciality,
           degree: req.body.degree,
         });
         doctor
@@ -57,10 +58,7 @@ const loginDoc = (req, res) => {
               err: "Something went wrong!",
             });
           } else if (result) {
-            let token = jwt.sign(
-              { _id: doctor._id },
-              process.env.JWT_SECRET
-            );
+            let token = jwt.sign({ _id: doctor._id }, process.env.JWT_SECRET);
             if (token)
               res.send({
                 token: token,

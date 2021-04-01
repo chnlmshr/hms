@@ -66,8 +66,8 @@ export async function registerDoctor(dispatch, registerPayload) {
     let data = await response.json();
 
     if (data.doctor) {
-      dispatch({ type: "REGISTER_SUCCESS", payload: data });
       localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "REGISTER_SUCCESS", payload: data });
       return data;
     }
     dispatch({ type: "REGISTER_ERROR", error: data.err });
@@ -91,8 +91,8 @@ export async function loginDoctor(dispatch, loginPayload) {
     let data = await response.json();
 
     if (data.doctor) {
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
       localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
       return data;
     } else dispatch({ type: "LOGIN_ERROR", error: data.err });
     return;

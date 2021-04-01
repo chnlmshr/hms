@@ -13,6 +13,7 @@ const Doctor = (props) => {
     password: "",
     confirmpassword: "",
     phone: "",
+    speciality: "",
     degree: "",
   };
   const [state, setState] = useState(initialState);
@@ -92,6 +93,17 @@ const Doctor = (props) => {
           value={state.phone}
           onChange={handleOnChange}
           placeholder="Phone"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="text"
+          className="form-control"
+          name="speciality"
+          value={state.speciality}
+          onChange={handleOnChange}
+          placeholder="Speciality"
           required
         />
       </div>
