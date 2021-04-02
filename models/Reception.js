@@ -14,6 +14,10 @@ var ReceptionSchema=mongoose.Schema({
     speciality:{
         type:String,
         required: true, 
+      },
+      date: {
+        type: Number,
+        default: Math.round(Date.now() / 1000)
       }
 })
 var Reception=mongoose.model("Reception", ReceptionSchema);

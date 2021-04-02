@@ -29,6 +29,7 @@ const disease=require("./routes/disease")
 const reception=require("./routes/reception")
 const settings=require("./routes/settings")
 const choosedoctor=require('./routes/choosedoctor')
+const report=require('./routes/reports')
 
 app.use("/api", auth);
 app.use("/api", dashboard);
@@ -36,4 +37,5 @@ app.use("/api", disease );
 app.use("/api",settings );
 //app.use("/api", require("./routes/rooms"));
 app.use("/api",reception);
-app.use("/choosedoctor",choosedoctor);
+app.use("/api",choosedoctor);
+app.use("/api",report);
