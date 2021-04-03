@@ -9,42 +9,38 @@ router.get("/choosedoctor", (req, res) => {
     if (err || !payload) {
       res.send({ err: "Something went wrong!" });
     } else {
-      Reception.find({ patient: payload._id })
-        .sort({ date: -1 })
-        .exec((err, patient) => {
-          console.log(patient);
-          if (!patient.length || !patient[0].speciality) {
-            res.send({
-              success: true,
-              foundspeciality: false,
-            });
-          } else {
-            Doctor.find({ speciality: patient[0].speciality }, null, {
-              sort: { name: 1 },
+      Reception.findOne({ patient: payload._id }).exec((err, patient) => {
+        if (!patient || !patient.speciality) {
+          res.send({
+            success: true,
+            foundspeciality: false,
+          });
+        } else {
+          Doctor.find({ speciality: patient.speciality }, null, {
+            sort: { name: 1 },
+          })
+            .select(["-password", "-email", "-phone", "-date"])
+            .then((doctors) => {
+              if (err)
+                res.send({
+                  err: true,
+                  success: false,
+                  foundspeciality: false,
+                });
+              else {
+                res.send({
+                  success: true,
+                  doctors: doctors,
+                  foundspeciality: true,
+                });
+              }
             })
-              .select(["-password", "-email", "-phone", "-date"])
-              .then((doctors) => {
-                if (err)
-                  res.send({
-                    err: true,
-                    success: false,
-                    foundspeciality: false,
-                  });
-                else {
-                  console.log(doctors);
-                  res.send({
-                    success: true,
-                    doctors: doctors,
-                    foundspeciality: true,
-                  });
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-                res.send({ success: false, foundspeciality: false });
-              });
-          }
-        });
+            .catch((err) => {
+              console.log(err);
+              res.send({ success: false, foundspeciality: false });
+            });
+        }
+      });
     }
   });
 });

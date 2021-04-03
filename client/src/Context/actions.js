@@ -161,6 +161,7 @@ export async function logout(dispatch) {
   localStorage.removeItem("currentUser");
   localStorage.removeItem("token");
   localStorage.removeItem("username");
+  localStorage.removeItem("visitingInfo");
 }
 
 export async function changePassword(dispatch, passwordPayload) {
@@ -293,6 +294,7 @@ export async function report(dispatch, token) {
     } else dispatch({ type: "REPORT_ERROR" });
     return data;
   } catch (error) {
+    console.log(error);
     dispatch({ type: "REPORT_ERROR" });
   }
 }

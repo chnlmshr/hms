@@ -1,7 +1,6 @@
 import { Home } from "../components/Home";
 import { PatientDashboard, DoctorDashboard } from "../components/Dashboard";
 import { PatientAccount, DoctorAccount } from "../components/Account";
-import PageNotFound from "../components/NotFound";
 import { Login } from "../components/Login";
 import { Register } from "../components/Register";
 import { ChangePassword } from "../components/ChangePassword";
@@ -74,11 +73,6 @@ const routes = [
   {
     path: "/register",
     component: Register,
-    type: "",
-  },
-  {
-    path: "/*",
-    component: PageNotFound,
     type: "",
   },
 ];

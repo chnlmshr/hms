@@ -4,64 +4,64 @@ const { scoreOfDisease, Disease } = require("./Disease");
 const PatientSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
-  age: {
-    type: Number,
-    required: true
+  dateofbirth: {
+    type: Date,
+    required: true,
   },
   address: {
     custom: String,
     city: String,
     state: String,
-    zip: Number
+    zip: Number,
   },
   blood_group: {
-    type: String
+    type: String,
   },
   allergies: [
     {
-      type: String
-    }
+      type: String,
+    },
   ],
   diseases: {
     type: Array,
-    default: []
+    default: [],
   },
   sex: {
     type: String,
-    required: true
+    required: true,
   },
   score: {
     type: Number,
-    default: 0
+    default: 0,
   },
   room: {
     type: String,
     required: true,
-    default: "noroom"
+    default: "noroom",
   },
   lastUpdate: {
-    type: Number
+    type: Number,
   },
   date: {
     type: Number,
-    default: Math.round(Date.now() / 1000)
-  }
+    default: Math.round(Date.now() / 1000),
+  },
 });
 
 // PatientSchema.methods.updateScore = function () {

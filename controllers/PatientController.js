@@ -19,7 +19,7 @@ function registerPat(req, res) {
           email: req.body.email,
           password: hashedPass,
           phone: req.body.phone,
-          age: req.body.age,
+          dateofbirth: req.body.dateofbirth,
           sex: req.body.sex,
         });
         patient

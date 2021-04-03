@@ -85,12 +85,9 @@ export const Navigation = (props) => {
               JSON.parse(localStorage.getItem("currentUser")).name}
           </a>
           <div
-            className="dropdown-menu dropdown-menu-right"
+            className="dropdown-menu dropdown-menu-lg-right"
             aria-labelledby="navbarDropdown"
           >
-            <a className="dropdown-item" href={props.homelink + "/settings"}>
-              Settings
-            </a>
             <a
               className="dropdown-item"
               href={props.homelink + "/changepassword"}

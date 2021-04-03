@@ -30,6 +30,7 @@ const reception=require("./routes/reception")
 const settings=require("./routes/settings")
 const choosedoctor=require('./routes/choosedoctor')
 const report=require('./routes/reports')
+const visit=require('./routes/visit')
 
 app.use("/api", auth);
 app.use("/api", dashboard);
@@ -39,3 +40,4 @@ app.use("/api", settings);
 app.use("/api",reception);
 app.use("/api",choosedoctor);
 app.use("/api",report);
+app.use("/api",visit);

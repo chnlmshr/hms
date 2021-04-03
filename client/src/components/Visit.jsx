@@ -35,7 +35,7 @@ const Visit = (props) => {
             <div className="row">
               <div className="col-md-8 offset-md-2">
                 Average waiting time:{" "}
-                {visitingInfo ? visitingInfo.avgDiagnosisTime : "N/A"}
+                {visitingInfo ? visitingInfo.waitingTime + " hrs" : "N/A"}
               </div>
             </div>
           </div>

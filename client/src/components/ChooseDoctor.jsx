@@ -7,9 +7,8 @@ import { Navigation } from "./Navigation";
 const DoctorCard = (props) => {
   const dispatch = useAuthDispatch(),
     { token, loading } = useAuthState();
-  const onClickHandler = () => {
-    let data = visit(dispatch, { token: token, id: props.id });
-    data = { success: true };
+  const onClickHandler = async() => {
+    let data = await visit(dispatch, { token: "patient " + token, consultant: props.id });
     if (data && data.success) props.PROPS.history.push("/visit");
   };
   return (
@@ -45,60 +44,6 @@ const ChooseDoctor = (props) => {
 
   useEffect(async () => {
     const data = await chooseDoctor(dispatch, token);
-    // data = {
-    //   success: true,
-    //   foundspeciality: true,
-    //   doctors: [
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Aditya",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //     {
-    //       name: "Dr. Someone",
-    //       degree: "MBBS",
-    //       speciality: "Ear Nose Throat(ENT)",
-    //       _id: "fuefhf3273738ye3ye7732h7387",
-    //     },
-    //   ],
-    // };
     if (data && data.success) {
       if (data.foundspeciality) {
         setState({
@@ -118,7 +63,7 @@ const ChooseDoctor = (props) => {
   else if (!state.success)
     return (
       <div>
-        <Navigation homelink="/patient" active="choosedoctor"/>
+        <Navigation homelink="/patient" active="choosedoctor" />
         <div className="container">
           <div className="row mt-5"></div>
           <div className="row mt-5"></div>
@@ -187,7 +132,7 @@ const ChooseDoctor = (props) => {
             <div className="col-md-8 offset-md-2">
               {state.doctors.map((doctor) => (
                 <DoctorCard
-                  key={doctor}
+                  key={doctor._id}
                   name={doctor.name}
                   degree={doctor.degree}
                   speciality={doctor.speciality}

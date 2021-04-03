@@ -165,7 +165,7 @@ router.post("/updatepatientaccount", (req, res) => {
         // }
       )
         .then((patient) => {
-          patient.updateScore();
+          // patient.updateScore();
           res.send({ success: true });
         })
         .catch((err) => {
@@ -203,4 +203,4 @@ router.get("/deletepatient", (req, res) => {
       res.status(400).redirect("/api");
     });
 });
-module.exports = router
+module.exports = router;

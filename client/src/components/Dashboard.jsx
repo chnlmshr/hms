@@ -24,7 +24,8 @@ import {
 export const PatientDashboard = (props) => {
   const { token } = useAuthState(),
     dispatch = useAuthDispatch(),
-    [state, setState] = useState({ name: "" });
+    [state, setState] = useState({ name: "" }),
+    visitingInfo = JSON.parse(localStorage.getItem("visitingInfo"));
   useEffect(async () => {
     const data = await fetchPatient(dispatch, token);
     if (data.err) logout(dispatch);
@@ -39,85 +40,95 @@ export const PatientDashboard = (props) => {
         active="dashboard"
       />
       <div className="container">
-        <div className="row">
-          <div className="col-md-10 offset-md-1 mt-3">
-            <div className="alert alert-info" role="alert">
-              This is a warning alert—check it out!
+        {visitingInfo ? (
+          <div className="row">
+            <div className="col-md-10 offset-md-1 mt-3">
+              <div className="alert alert-info text-center" role="alert">
+                 No. of patients before you:{" "}
+                {visitingInfo ? visitingInfo.patientsInQueue : "N/A"} &emsp; &emsp;
+                Average waiting time:{" "}
+                {visitingInfo ? visitingInfo.waitingTime + " hrs" : "N/A"}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
         <div className="row">
           <div className="col-12 col-md-5">
             <div className="row m-3">
               <div className="col-md-12">
+                <a href="/patient/account"> 
                 <div className="card text-center">
                   <div className="card-body">
                     <h1 className="card-title dashboard-icon">
                       <FontAwesomeIcon icon={faUserEdit} size="3x" />
                     </h1>
-                    <a
-                      href="/patient/account"
-                      className="card-link"
-                      style={{ color: "brow m-3n" }}
+                    <div
+                      className="card-text"
                     >
                       Account
-                    </a>
+                    </div>
                   </div>
                 </div>
+                </a>
               </div>
             </div>
             <div className="row m-3">
               <div className="col-md-12">
+              <a href="/reception">
                 <div className="card text-center">
                   <div className="card-body">
                     <h1 className="card-title dashboard-icon">
                       <FontAwesomeIcon icon={faClinicMedical} size="3x" />
                     </h1>
-                    <a
-                      href="/reception"
-                      className="card-link"
-                      style={{ color: "brow m-3n" }}
+                    <div
+                      
+                      className="card-text"
                     >
                       Reception
-                    </a>
+                    </div>
                   </div>
                 </div>
+                </a>
               </div>
             </div>
             <div className="row m-3">
               <div className="col-md-12">
+              <a href="/report">
                 <div className="card text-center">
                   <div className="card-body">
                     <h1 className="card-title dashboard-icon">
                       <FontAwesomeIcon icon={faFileMedicalAlt} size="3x" />
                     </h1>
-                    <a
-                      href="/report"
-                      className="card-link"
-                      style={{ color: "brow m-3n" }}
+                    <div
+                      
+                      className="card-text"
                     >
                       Report
-                    </a>
+                    </div>
                   </div>
                 </div>
+                </a>
               </div>
             </div>
             <div className="row m-3">
               <div className="col-md-12">
+              <a href="/choosedoctor">
                 <div className="card text-center">
                   <div className="card-body">
                     <h1 className="card-title dashboard-icon">
                       <FontAwesomeIcon icon={faUserMd} size="3x" />
                     </h1>
-                    <a
-                      href="/choosedoctor"
-                      className="card-link"
-                      style={{ color: "brow m-3n" }}
+                    <div
+                      
+                      className="card-text"
                     >
                       Choose Doctor
-                    </a>
+                    </div>
                   </div>
                 </div>
+                </a>
               </div>
             </div>
           </div>

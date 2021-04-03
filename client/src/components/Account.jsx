@@ -10,15 +10,23 @@ import {
 import { Navigation } from "./Navigation";
 
 export const PatientAccount = (props) => {
+const email = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).email : "";
+const phone = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).phone : "";
+const allergies = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).allergies : "";
+const customaddress = Boolean(JSON.parse(localStorage.getItem("currentUser")).address) ? JSON.parse(localStorage.getItem("currentUser")).address.customaddress : "";
+const city = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.city : "";
+const addstate = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.state : "";
+const zip = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.zip : "";
+const blood_group = Boolean(JSON.parse(localStorage.getItem("currentUser")).blood_group) ? JSON.parse(localStorage.getItem("currentUser")).blood_group : "";
   const initialState = {
-    phone: "",
-    email: "",
-    customaddress: "",
-    city: "",
-    state: "",
-    zip: "",
-    allergies: "",
-    bloodgroup: "",
+    phone: "" || phone,
+    email: "" || email,
+    customaddress: "" || customaddress,
+    city: "" || city,
+    state: "" || addstate,
+    zip: "" || zip,
+    allergies: "" || allergies,
+    bloodgroup: "" || blood_group,
     errorMessage: "",
     successMessage: "",
   };
