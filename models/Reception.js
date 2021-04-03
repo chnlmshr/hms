@@ -11,13 +11,33 @@ var ReceptionSchema=mongoose.Schema({
         type:mongoose.Types.ObjectId,
         required:true,
     },
+    doctor:{
+        type:mongoose.Types.ObjectId,
+        required:true,
+    },
     speciality:{
         type:String,
         required: true, 
       },
-      date: {
+      dateCreated: {
         type: Number,
-        default: Math.round(Date.now() / 1000)
+        default: Date.now() 
+      },
+      lastModified: {
+        type: Date,
+        default: Date.now() 
+      },
+      consultant:{
+          type:mongoose.Types.ObjectId,
+          required:false
+      },
+      consultantWord:{
+          type:String,
+          required:false
+      },
+      medicines:{
+          type:String,
+          required:false
       }
 })
 var Reception=mongoose.model("Reception", ReceptionSchema);
