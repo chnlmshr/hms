@@ -2,6 +2,7 @@ const Reception = require("../models/Reception");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const Doctor = require("../models/Doctor");
+
 router.get("/choosedoctor", (req, res) => {
   const token = req.headers["authorization"].split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {

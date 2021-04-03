@@ -10,10 +10,17 @@ router.post("/reception", (req, res) => {
     } else {
       var complications = req.body.complications;
       var speciality = req.body.department;
+      var medicines=req.body.medicines,
+      var consultantWord= req.body.consultantWord
       Reception.create({
         complications: complications,
         speciality: speciality,
         patient: payload._id,
+        consultant:payload._id,
+        medicines:medicines,
+        consultantWord:consultantWord
+
+
       })
         .then((reception) => {
           res.send({ success: true });
