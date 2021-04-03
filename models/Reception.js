@@ -11,10 +11,6 @@ var ReceptionSchema=mongoose.Schema({
         type:mongoose.Types.ObjectId,
         required:true,
     },
-    doctor:{
-        type:mongoose.Types.ObjectId,
-        required:true,
-    },
     speciality:{
         type:String,
         required: true, 

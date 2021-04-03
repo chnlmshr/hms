@@ -1,5 +1,6 @@
 const Reception = require("../models/Reception");
 const Patient = require("../models/Patient");
+const Doctor = require("../models/Doctor");
 const router = require("express").Router();
 const jwt=require("jsonwebtoken");
 
@@ -12,23 +13,60 @@ router.get('/report', (req,res)=>{
         res.send({ err: "Something went wrong!" });
       } 
 
-        var Repo={Reception,Patient}
-        Repo.findOne({patient: patient._id})
-        .select["-password","-email","-_id","- address","-patient"]
-        .exec((err, repo) => {
-            if (err)
-              res.send({
-                err: true,
-                success:false
-              });
+        var Repo={}
+       
+        Reception.findOne({patient:payload._id}).exec((err,reception)=>{
+            if(reception)
+            {   
+                Doctor.findById(reception.consultant).exec((err,doctor)=>{
+                    if(doctor)
+                    {
+                        Repo.consultant=doctor.name;
+                        res.send({success:true})
+                    }
+                    else {
+                        res.send({success:false})
+                    }
+                    
+                });
+                Patient.findById(payload._id).exec((err,patient)=>{
+                    if(patient)
+                    {
+                    Repo.name=patient.name;
+                Repo.blood_group=patient.blood_group;
+                Repo.age=patient.age;
+                Repo.sex=patient.sex;
+                Repo.consultantWord=patient.consultantWord;
+                Repo.complications=patient.complications;
+                Repo.allergies=patient.allergies;
+                Repo.medicines=patient.medicines;
+                Repo.dateCreated=patient.dateCreated;
+                Repo.lastModified=patient.lastModified;
+                res.send({success:true})
+                    }
+                    else{
+                        res.send({success:false})
+                    }
+
+                });
+                res.send({success:true})
+            }
+            else {
+                res.send({success:false})
+            }
+            
+        });
+     
+            if (Repo)
+            res.send({
+                success:true,
+                report:Repo
+            });
               else 
               {
-                  res.send({
-                      success:true,
-                      report:repo
-                  });
+               res.send({success:false})   
               }
     });
 });
-});
+
 module.exports=router;
