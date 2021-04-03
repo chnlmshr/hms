@@ -44,62 +44,62 @@ const ChooseDoctor = (props) => {
     { token, loading } = useAuthState();
 
   useEffect(async () => {
-    let data = await chooseDoctor(dispatch, token);
-    data = {
-      success: true,
-      foundspeciality: true,
-      doctors: [
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Aditya",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-        {
-          name: "Dr. Someone",
-          degree: "MBBS",
-          speciality: "Ear Nose Throat(ENT)",
-          _id: "fuefhf3273738ye3ye7732h7387",
-        },
-      ],
-    };
-    if (data.success) {
+    const data = await chooseDoctor(dispatch, token);
+    // data = {
+    //   success: true,
+    //   foundspeciality: true,
+    //   doctors: [
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Aditya",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //     {
+    //       name: "Dr. Someone",
+    //       degree: "MBBS",
+    //       speciality: "Ear Nose Throat(ENT)",
+    //       _id: "fuefhf3273738ye3ye7732h7387",
+    //     },
+    //   ],
+    // };
+    if (data && data.success) {
       if (data.foundspeciality) {
         setState({
           success: true,
@@ -116,8 +116,68 @@ const ChooseDoctor = (props) => {
 
   if (state.success === "loading" || loading) return <div>Loading...</div>;
   else if (!state.success)
-    return <div>Some Error occurred... Please reload</div>;
+    return (
+      <div>
+        <Navigation homelink="/patient" active="choosedoctor"/>
+        <div className="container">
+          <div className="row mt-5"></div>
+          <div className="row mt-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row m-2">
+            <div className="col-md-6 offset-md-3 visit-card p-5">
+              <div className="row">
+                <div className="col-md-8 offset-md-2"></div>
+              </div>
+              <div className="row">
+                <div className="col-md-8 offset-md-2 text-bold">
+                  Some Error occurred... Please reload
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-8 offset-md-2"></div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5"></div>
+          <div className="row mt-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row mt-md-5"></div>
+        </div>
+      </div>
+    );
   else if (!state.foundspeciality) return <Redirect to="/reception" />;
+  else if (!state.doctors.length)
+    return (
+      <div>
+        <Navigation homelink="/patient" />
+        <div className="container">
+          <div className="row mt-5"></div>
+          <div className="row mt-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row m-2">
+            <div className="col-md-6 offset-md-3 visit-card p-5">
+              <div className="row">
+                <div className="col-md-8 offset-md-2"></div>
+              </div>
+              <div className="row">
+                <div className="col-md-8 offset-md-2 text-bold">
+                  No doctor found with specified speciality 😓
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-8 offset-md-2"></div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5"></div>
+          <div className="row mt-5"></div>
+          <div className="row mt-md-5"></div>
+          <div className="row mt-md-5"></div>
+        </div>
+      </div>
+    );
   else
     return (
       <div>

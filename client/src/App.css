@@ -26,6 +26,10 @@
   color: #fff;
 }
 
+.footerlink:hover {
+  color: #fff;
+}
+
 .pnf {
   display: flex;
   width: 100%;
@@ -58,4 +62,15 @@
 
 .choose-doc-card:hover {
   border: 2px solid #747474;
+}
+
+.report {
+  border: 2px solid #747474;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .report {
+    border: none;
+  }
 }

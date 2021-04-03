@@ -1,4 +1,3 @@
-const { Patient } = require("../models/Patient");
 const mongoose = require("mongoose");
 
 var ReceptionSchema=mongoose.Schema({

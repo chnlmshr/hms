@@ -15,7 +15,7 @@ mongoose
     useUnifiedTopology: true,
     useFindAndModify: false,
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => console.log("DB is up"))
   .catch((err) => console.log(err));
@@ -33,8 +33,8 @@ const report=require('./routes/reports')
 
 app.use("/api", auth);
 app.use("/api", dashboard);
-app.use("/api", disease );
-app.use("/api",settings );
+app.use("/api", disease);
+app.use("/api", settings);
 //app.use("/api", require("./routes/rooms"));
 app.use("/api",reception);
 app.use("/api",choosedoctor);
