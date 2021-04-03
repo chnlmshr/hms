@@ -47,7 +47,7 @@ export const Reception = (props) => {
 
   return (
     <div>
-      <Navigation homelink="/patient" />
+      <Navigation homelink="/patient" active="reception"/>
       <div className="container">
         <div className="row my-5 py-md-5">
           <div className="offset-md-2 col-md-8">

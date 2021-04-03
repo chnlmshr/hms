@@ -1,4 +1,4 @@
-import hospital from "../images/hospital.jpg";
+import illus3 from "../images/illus3.svg";
 
 export const Home = (props) => {
   return (
@@ -37,8 +37,8 @@ export const Home = (props) => {
           <div className="col-md-2 col-sm-0"></div>
           <div className="col-sm-12 col-md-6 mt-3 mt-md-0">
             <img
-              src={hospital}
-              className="rounded mx-auto d-block img-fluid"
+              src={illus3}
+              className="mx-auto d-block img-fluid"
               alt="hospital"
             />
           </div>

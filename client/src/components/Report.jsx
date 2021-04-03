@@ -1,60 +1,81 @@
+import { useEffect, useState } from "react";
+import { useAuthDispatch, useAuthState } from "../Context";
+import { report } from "../Context/actions";
 import { Navigation } from "./Navigation";
-import smallLogo from "../images/hospital.jpg";
 const Report = (props) => {
+  const initialState = {
+    dateCreated: "",
+    lastModified: "",
+    name: "",
+    age: "",
+    sex: "",
+    blood_group: "",
+    consultant: "",
+    complications: "",
+    consultantWord: "",
+    allergies: "",
+    medicines: "",
+  };
+  const dispatch = useAuthDispatch(),
+    { token } = useAuthState();
+  const [state, setState] = useState(initialState);
+  useEffect(async () => {
+    const data = await report(dispatch, token);
+    if (data && data.success) {
+      setState(data);
+    }
+  }, []);
   return (
     <div>
-      {/* <Navigation homelink="patient" />
+      <Navigation homelink="patient" active="report"/>
       <div className="container">
-        <div className="row m-5">
+        <div className="row m-2 m-md-5">
           <div className="offset-md-2 col-md-8 report p-5">
             <div className="row">
-              <div className="col-5 hospitalname display-3">HMS</div>
-              <div className="col-5 offset-2">
-                <div className="row">
-                  <div className="col-12 createdon">Date Created: DD-MM-YY</div>
+              <div className="col-md-5 hospitalname display-3">HMS</div>
+              <div className="col-md-5 offset-md-2">
+                <div className="row mt-3">
+                  <div className="col-12 createdon">
+                    Date Created: {state.dateCreated}
+                  </div>
                 </div>
-                <div className="row">
+                <div className="row mt-2">
                   <div className="col-12 lastmodified">
-                    Last Modified: DD-MM-YY
+                    Last Modified: {state.lastModified}
                   </div>
                 </div>
               </div>
             </div>
             <hr />
-            <div className="row">
-              <div className="col-6 name">Mrs. Someone something someone</div>
-              <div className="col-3 age">Age: 100</div>
-              <div className="col-3 sex">Female</div>
+            <div className="row mt-3">
+              <div className="col-6 name">{state.name}</div>
+              <div className="col-3 age">Age: {state.age}</div>
+              <div className="col-3 sex">{state.sex}</div>
             </div>
-            <div className="row">
-              <div className="col-6 bloodgroup">Blood Group: AB+</div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="row">
-              <div className="col-12">
-                <nav className="navbar navbar-light bg-eee">
-                  <div className="pr-5 pt-3 h3">Welcome!</div>
-                  <img
-                    src={smallLogo}
-                    width="60"
-                    height="60"
-                    className="d-inline-block align-top ml-5 mt-3"
-                    alt=""
-                  />
-                </nav>
+            <div className="row mt-3">
+              <div className="col-6">
+                <strong>Blood Group:</strong> {state.blood_group}
+              </div>
+              <div className="col-6">
+                <strong>Consultant:</strong> {state.consultant}
               </div>
             </div>
             <div className="row">
-              <div className="col-12">
-                <div class="text-center">
-                  <button className="m-2">hello</button>
-                  <button className="m-2">bruh</button>
-                </div>
+              <div className="col-12 text-justify mt-4">
+                <strong>Complications: </strong> {state.complications}
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 text-justify mt-4">
+                <strong>Consultats's Word: </strong> {state.consultantWord}
+              </div>
+            </div>
+            <div className="row mt-4">
+              <div className="col-6">
+                <strong>Allergies:</strong> {state.allergies}
+              </div>
+              <div className="col-6">
+                <strong>Medicines:</strong> {state.medicines}
               </div>
             </div>
           </div>

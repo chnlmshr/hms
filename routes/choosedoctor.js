@@ -12,7 +12,7 @@ router.get("/choosedoctor", (req, res) => {
         .sort({ date: -1 })
         .exec((err, patient) => {
           console.log(patient);
-          if (!patient[0].speciality) {
+          if (!patient.length || !patient[0].speciality) {
             res.send({
               success: true,
               foundspeciality: false,

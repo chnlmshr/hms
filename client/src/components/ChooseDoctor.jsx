@@ -118,7 +118,7 @@ const ChooseDoctor = (props) => {
   else if (!state.success)
     return (
       <div>
-        <Navigation homelink="/patient" />
+        <Navigation homelink="/patient" active="choosedoctor"/>
         <div className="container">
           <div className="row mt-5"></div>
           <div className="row mt-5"></div>
