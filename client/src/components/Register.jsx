@@ -140,7 +140,7 @@ const Patient = (props) => {
     password: "",
     confirmpassword: "",
     phone: "",
-    age: "",
+    dateofbirth: "",
     sex: "",
   };
   const [state, setState] = useState(initialState);
@@ -225,26 +225,28 @@ const Patient = (props) => {
       </div>
       <div className="form-group">
         <input
-          type="number"
+          type="date"
           className="form-control"
-          name="age"
-          value={state.age}
+          name="dateofbirth"
+          value={state.dateofbirth}
           onChange={handleOnChange}
-          placeholder="Age"
+          placeholder="Date of Birth"
           required
         />
       </div>
       <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
+        <select
           name="sex"
           aria-describedby="error"
-          value={state.degree}
+          className="custom-select"
+          value={state.sex}
           onChange={handleOnChange}
-          placeholder="Gender"
-          required
-        />
+        >
+          <option value="">Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Others">Others</option>
+        </select>
         <small id="error" className="form-text">
           {errorMessage}
         </small>

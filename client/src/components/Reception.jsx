@@ -6,22 +6,20 @@ export const Reception = (props) => {
   const name = JSON.parse(localStorage.getItem("currentUser")).name;
   const email = JSON.parse(localStorage.getItem("currentUser")).email;
   const phone = JSON.parse(localStorage.getItem("currentUser")).phone;
-  const age = JSON.parse(localStorage.getItem("currentUser")).age;
   const allergies = JSON.parse(localStorage.getItem("currentUser")).allergies;
   const { loading, token } = useAuthState(),
-    dispatch = useAuthDispatch(),
-    initialState = {
+    dispatch = useAuthDispatch();
+  
+  const initialState = {
       name: name,
       phone: phone,
       email: email,
-      age: age,
       allergies: allergies,
       complications: "",
       errorMessage: "",
-      department: "Department",
+      department: "",
     },
     [state, setState] = useState(initialState);
-
   const handleOnChange = (event) => {
     setState({
       ...state,
@@ -43,11 +41,12 @@ export const Reception = (props) => {
     } catch (error) {
       setState({ ...initialState, errorMessage: "Something went wrong!" });
     }
-  };
+  }
+
 
   return (
     <div>
-      <Navigation homelink="/patient" />
+      <Navigation homelink="/patient" active="reception" />
       <div className="container">
         <div className="row my-5 py-md-5">
           <div className="offset-md-2 col-md-8">
@@ -106,16 +105,6 @@ export const Reception = (props) => {
                       </div>
                       <div className="form-group">
                         <input
-                          type="number"
-                          className="form-control"
-                          name="age"
-                          value={state.age}
-                          onChange={handleOnChange}
-                          placeholder="Age"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
                           type="text"
                           className="form-control"
                           name="allergies"
@@ -131,8 +120,8 @@ export const Reception = (props) => {
                           value={state.value}
                           onChange={handleOnChange}
                         >
-                          <option value="Department">Department</option>
-                          <option value="Dentist">Dentist</option>
+                          <option value="">Choose Department</option>
+                          <option value="Dental">Dental</option>
                           <option value="ENT">ENT(Ear Nose Throat)</option>
                           <option value="Gynecology">
                             Gynecology(Female eproductive System)

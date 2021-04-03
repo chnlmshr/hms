@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
 .navbar-background {
   background-color: #5398ba;
 }
@@ -23,6 +29,11 @@
 }
 
 .footerlink {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footerlink:hover {
   color: #fff;
 }
 
@@ -61,6 +72,30 @@
 }
 
 .report {
-  border: 2px solid black;
+  border: 2px solid #747474;
   border-radius: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .report {
+    border: none;
+  }
+}
+
+.successMessage {
+  color: #008035;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .section-to-print, .section-to-print * {
+    visibility: visible;
+  }
+  .section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }

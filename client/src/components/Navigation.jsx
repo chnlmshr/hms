@@ -24,14 +24,49 @@ export const Navigation = (props) => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          <li
+            className={
+              "nav-item " + (props.active === "dashboard" ? "active" : "")
+            }
+          >
             <a className="nav-link" href={props.homelink}>
               Home
             </a>
           </li>
-          <li className="nav-item">
+          <li
+            className={
+              "nav-item " + (props.active === "account" ? "active" : "")
+            }
+          >
             <a className="nav-link" href={props.homelink + "/account"}>
               Account
+            </a>
+          </li>
+          <li
+            className={
+              "nav-item " + (props.active === "report" ? "active" : "")
+            }
+          >
+            <a className="nav-link" href={"/report"}>
+              Report
+            </a>
+          </li>
+          <li
+            className={
+              "nav-item " + (props.active === "reception" ? "active" : "")
+            }
+          >
+            <a className="nav-link" href={"/reception"}>
+              Reception
+            </a>
+          </li>
+          <li
+            className={
+              "nav-item " + (props.active === "choosedoctor" ? "active" : "")
+            }
+          >
+            <a className="nav-link" href={"/choosedoctor"}>
+              Choose Doctor
             </a>
           </li>
         </ul>
@@ -50,12 +85,9 @@ export const Navigation = (props) => {
               JSON.parse(localStorage.getItem("currentUser")).name}
           </a>
           <div
-            className="dropdown-menu dropdown-menu-right"
+            className="dropdown-menu dropdown-menu-lg-right"
             aria-labelledby="navbarDropdown"
           >
-            <a className="dropdown-item" href={props.homelink + "/settings"}>
-              Settings
-            </a>
             <a
               className="dropdown-item"
               href={props.homelink + "/changepassword"}

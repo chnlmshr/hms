@@ -27,10 +27,18 @@ const DoctorSchema = mongoose.Schema({
     type: Number,
     default: Math.round(Date.now() / 1000),
   },
-  speciality:{
-    type:String,
-    required: true, 
-  }
+  speciality: {
+    type: String,
+    required: true,
+  },
+  avgDiagnosisTime: {
+    type: Number,
+    default: 0,
+  },
+  patientsInQueue: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("Doctor", DoctorSchema);

@@ -23,19 +23,21 @@ mongoose
 app.listen(process.env.PORT || 9999, () => {
   console.log("Server is up");
 });
-const auth = require("./routes/authentication");
-const dashboard = require("./routes/dashboard");
-const disease = require("./routes/disease");
-const reception = require("./routes/reception");
-const settings = require("./routes/settings");
-const choosedoctor = require("./routes/choosedoctor");
-const report = require("./routes/reports");
+const auth=require("./routes/authentication")
+const dashboard=require("./routes/dashboard")
+const disease=require("./routes/disease")
+const reception=require("./routes/reception")
+const settings=require("./routes/settings")
+const choosedoctor=require('./routes/choosedoctor')
+const report=require('./routes/reports')
+const visit=require('./routes/visit')
 
 app.use("/api", auth);
 app.use("/api", dashboard);
 app.use("/api", disease);
 app.use("/api", settings);
 //app.use("/api", require("./routes/rooms"));
-app.use("/api", reception);
-app.use("/api", choosedoctor);
-app.use("/api", report);
+app.use("/api",reception);
+app.use("/api",choosedoctor);
+app.use("/api",report);
+app.use("/api",visit);

@@ -6,12 +6,14 @@ export const Footer = (props) => {
           <div className="col-lg-6 col-12">
             <h4 className="display-4">HMS</h4>
             <p>
-              Hamari website number one ab isse jyada nhi likh pa raha ok baad
-              me likh lunga bye bye achha chalo ek line aur
+              No more long queues. <br />
+              No more hassle of going from counter to counter. <br/>
+              Providing you the access of hospital from the ease of home. <br />
             </p>
+            <div className="mt-4">Made with &#129505; by Aditya & Chanchal</div>
           </div>
           <div className="col-lg-4 col-12 offset-lg-2">
-            <h6 className="ml-3">Follow Us on</h6>
+            <h6 className="ml-3 mb-3">Follow Us on</h6>
             <ul>
               <li>
                 <a href="#" className="footerlink">
@@ -34,6 +36,7 @@ export const Footer = (props) => {
                 </a>
               </li>
             </ul>
+            <div className="mt-4">Like Our work? <a href="#" className="footerlink"> Support Us! </a> 😋</div>
           </div>
         </div>
       </div>
