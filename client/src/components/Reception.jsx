@@ -138,7 +138,9 @@ export const Reception = (props) => {
                             Gynecology(Female eproductive System)
                           </option>
                           <option value="Cardiology">Cardiology(Heart)</option>
-                          <option value="Pulmonogy">Pulmonogy(Lungs)</option>
+                          <option value="Pulmonology">
+                            Pulmonology(Lungs)
+                          </option>
                           <option value="Neprology">Neprology(Kidney)</option>
                           <option value="Neurology">
                             Neurology(Nervous System)
