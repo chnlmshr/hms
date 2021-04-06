@@ -11,7 +11,7 @@ import {
 
 export const AdminLogin = (props) => {
   const initialState = {
-    adminid: "",
+    adminId: "",
     password: "",
   };
   const [state, setState] = useState(initialState);
@@ -56,8 +56,8 @@ export const AdminLogin = (props) => {
                   <input
                     type="text"
                     className="form-control"
-                    name="adminid"
-                    value={state.adminid}
+                    name="adminId"
+                    value={state.adminId}
                     onChange={handleOnChange}
                     placeholder="Admin Id"
                   />

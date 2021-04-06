@@ -13,6 +13,7 @@ import {
   report,
   visit,
   loginAdmin,
+  changePasswordAdmin,
 } from "./actions";
 import { AuthProvider, useAuthDispatch, useAuthState } from "./context";
 
@@ -34,4 +35,5 @@ export {
   report,
   visit,
   loginAdmin,
+  changePasswordAdmin,
 };

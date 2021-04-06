@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { useAuthDispatch, useAuthState, changePassword } from "../Context";
+import {
+  useAuthDispatch,
+  useAuthState,
+  changePassword,
+  changePasswordAdmin,
+} from "../Context";
 
 export const ChangePassword = (props) => {
   const initialState = {
@@ -19,7 +24,9 @@ export const ChangePassword = (props) => {
     try {
       await (Boolean(patient)
         ? changePassword(dispatch, { ...state, token: "patient " + token })
-        : Boolean(doctor) ? changePassword(dispatch, { ...state, token: "doctor " + token }) : changePassword(dispatch, { ...state, token: "admin " + token }));
+        : Boolean(doctor)
+        ? changePassword(dispatch, { ...state, token: "doctor " + token })
+        : changePasswordAdmin(dispatch, { ...state, token: "admin " + token }));
       props.history.push("/");
     } catch (error) {
       console.log(error);

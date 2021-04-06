@@ -300,7 +300,7 @@ export const loginAdmin = async (dispatch, loginPayload) => {
     dispatch({ type: "REQUEST_LOGIN" });
     let response = await fetch(`${ROOT_URL}/api/loginadmin`, requestOptions);
     let data = await response.json();
-    if (data.patient) {
+    if (data.admin) {
       localStorage.setItem("currentUser", JSON.stringify(data));
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
       return data;
@@ -335,5 +335,29 @@ export async function registerDoctor(dispatch, registerPayload) {
   } catch (error) {
     console.log(error);
     dispatch({ type: "REGISTER_ERROR", error: "Something went wrong!" });
+  }
+}
+
+export async function changePasswordAdmin(dispatch, passwordPayload) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(passwordPayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_CHANGE_PASSWORD" });
+    let response = await fetch(
+      `${ROOT_URL}/api/changepasswordadmin`,
+      requestOptions
+    );
+    let data = await response.json();
+    if (data.token) {
+      dispatch({ type: "CHANGE_PASSWORD_SUCCESS", payload: data });
+      localStorage.setItem("currentUser", JSON.stringify(data));
+    } else dispatch({ type: "CHANGE_PASSWORD_ERROR", error: data.err });
+    return;
+  } catch (error) {
+    dispatch({ type: "CHANGE_PASSWORD_ERROR", error: "Something went wrong" });
   }
 }

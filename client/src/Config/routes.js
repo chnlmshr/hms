@@ -64,7 +64,7 @@ const routes = [
   {
     path: "/admin/changepassword",
     component: ChangePassword,
-    type: "", //admin
+    type: "admin",
   },
   {
     path: "/",
@@ -89,7 +89,7 @@ const routes = [
   {
     path: "/admin",
     component: Admin,
-    type: "", // admin
+    type: "admin",
   },
 ];
 
