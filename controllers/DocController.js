@@ -1,51 +1,56 @@
 const Doctor = require("../models/Doctor"),
+  Admin=require("../models/Admin"),
   bcrypt = require("bcryptjs"),
   jwt = require("jsonwebtoken");
 
 function registerDoc(req, res) {
-  if (req.body.password !== req.body.confirmpassword) {
-    res.send({
-      err: "Password and Confirm Password doesn't match!",
-    });
-  } else {
-    bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
-      if (err) {
-        res.send({
-          err: "Something went wrong!",
-        });
-      } else {
-        let doctor = new Doctor({
-          name: req.body.name,
-          email: req.body.email,
-          password: hashedPass,
-          phone: req.body.phone,
-          degree: req.body.degree,
-          speciality:req.body.speciality,
-          
-        });
-        doctor
-          .save()
-          .then((doctor) => {
-            let token = jwt.sign({ _id: doctor._id }, process.env.JWT_SECRET);
-            if (token)
-              res.send({
-                token: token,
-                doctor: true,
-              });
-            else
-              res.send({
-                err: "Something went wrong!",
-              });
-          })
-          .catch((error) => {
-            res.send({
-              err: "Something went wrong!",
+  const admin = req.body.token.split(" ")[0],
+      token = req.body.token.split(" ")[1]
+    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+      if (err || !payload) {
+        res.send({ err: "Something went wrong!" });
+      } else
+       {
+         if(admin)
+         {
+            bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
+              if (err) {
+                res.send({
+                  err: "Something went wrong!",
+                });
+              } else {
+                let doctor = new Doctor({
+                  email: req.body.email,
+                  password: hashedPass,
+                
+                });
+                doctor
+                  .save()
+                  .then((doctor) => {
+                    let token = jwt.sign({ _id: doctor._id }, process.env.JWT_SECRET);
+                    if (token)
+                      res.send({
+                        token: token,
+                        doctor: true,
+                      });
+                    else
+                      res.send({
+                        err: "Something went wrong!",
+                      });
+                  })
+                  .catch((error) => {
+                    res.send({
+                      err: "Something went wrong!",
+                    });
+                  });
+              }
             });
-          });
-      }
-    });
-  }
-}
+          }
+        }
+      });
+    }
+
+  
 
 const loginDoc = (req, res) => {
   Doctor.findOne({ email: req.body.email }).then((doctor) => {
