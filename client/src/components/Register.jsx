@@ -166,6 +166,7 @@ const Patient = (props) => {
 
   return (
     <form className="p-3" onSubmit={handleOnSubmit}>
+      <h5 className="pb-3">Register Patient</h5>
       <div className="form-group">
         <input
           type="text"
@@ -224,15 +225,21 @@ const Patient = (props) => {
         />
       </div>
       <div className="form-group">
-        <input
-          type="date"
-          className="form-control"
-          name="dateofbirth"
-          value={state.dateofbirth}
-          onChange={handleOnChange}
-          placeholder="Date of Birth"
-          required
-        />
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <div className="input-group-text">DOB</div>
+          </div>
+          <input
+            type="date"
+            className="form-control"
+            name="dateofbirth"
+            id="dateofbirth"
+            value={state.dateofbirth}
+            onChange={handleOnChange}
+            placeholder="Date of Birth"
+            required
+          />
+        </div>
       </div>
       <div className="form-group">
         <select
@@ -285,52 +292,7 @@ export const Register = (props) => {
           <div className="col-md-6 offset-md-3">
             <div className="card form-container">
               <div className="card-body">
-                <ul className="nav nav-tabs" id="registerTab" role="tablist">
-                  <li className="nav-item">
-                    <a
-                      className="nav-link active"
-                      id="doctorregister-tab"
-                      data-toggle="tab"
-                      href="#doctorregister"
-                      role="tab"
-                      aria-controls="doctorregister"
-                      aria-selected="true"
-                    >
-                      Doctor
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      id="patientregister-tab"
-                      data-toggle="tab"
-                      href="#patientregister"
-                      role="tab"
-                      aria-controls="patientregister"
-                      aria-selected="false"
-                    >
-                      Patient
-                    </a>
-                  </li>
-                </ul>
-                <div className="tab-content" id="registerTabContent">
-                  <div
-                    className="tab-pane fade show active"
-                    id="doctorregister"
-                    role="tabpanel"
-                    aria-labelledby="doctorregister-tab"
-                  >
-                    <Doctor {...props} />
-                  </div>
-                  <div
-                    className="tab-pane fade"
-                    id="patientregister"
-                    role="tabpanel"
-                    aria-labelledby="patientregister-tab"
-                  >
-                    <Patient {...props} />
-                  </div>
-                </div>
+                <Patient {...props} />
               </div>
             </div>
           </div>

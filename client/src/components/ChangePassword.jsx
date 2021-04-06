@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuthDispatch, useAuthState, changePassword } from "../Context";
-import { Navigation } from "./Navigation";
 
 export const ChangePassword = (props) => {
   const initialState = {
@@ -9,7 +8,7 @@ export const ChangePassword = (props) => {
   };
   const [state, setState] = useState(initialState);
   const dispatch = useAuthDispatch();
-  const { patient, loading, errorMessage, token } = useAuthState();
+  const { patient, loading, errorMessage, token, doctor } = useAuthState();
 
   const handleOnChange = (event) =>
     setState({ ...state, [event.target.name]: event.target.value });
@@ -20,7 +19,7 @@ export const ChangePassword = (props) => {
     try {
       await (Boolean(patient)
         ? changePassword(dispatch, { ...state, token: "patient " + token })
-        : changePassword(dispatch, { ...state, token: "doctor " + token }));
+        : Boolean(doctor) ? changePassword(dispatch, { ...state, token: "doctor " + token }) : changePassword(dispatch, { ...state, token: "admin " + token }));
       props.history.push("/");
     } catch (error) {
       console.log(error);

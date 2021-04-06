@@ -9,6 +9,10 @@ import {
   changePassword,
   updateAccount,
   reception,
+  chooseDoctor,
+  report,
+  visit,
+  loginAdmin,
 } from "./actions";
 import { AuthProvider, useAuthDispatch, useAuthState } from "./context";
 
@@ -26,4 +30,8 @@ export {
   changePassword,
   updateAccount,
   reception,
+  chooseDoctor,
+  report,
+  visit,
+  loginAdmin,
 };

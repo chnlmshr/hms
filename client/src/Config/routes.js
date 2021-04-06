@@ -8,6 +8,7 @@ import { Reception } from "../components/Reception";
 import ChooseDoctor from "../components/ChooseDoctor";
 import Visit from "../components/Visit";
 import Report from "../components/Report";
+import { Admin, AdminLogin } from "../components/Admin";
 
 const routes = [
   {
@@ -61,6 +62,11 @@ const routes = [
     type: "doctor",
   },
   {
+    path: "/admin/changepassword",
+    component: ChangePassword,
+    type: "", //admin
+  },
+  {
     path: "/",
     component: Home,
     type: "",
@@ -74,6 +80,16 @@ const routes = [
     path: "/register",
     component: Register,
     type: "",
+  },
+  {
+    path: "/adminlogin",
+    component: AdminLogin,
+    type: "",
+  },
+  {
+    path: "/admin",
+    component: Admin,
+    type: "", // admin
   },
 ];
 

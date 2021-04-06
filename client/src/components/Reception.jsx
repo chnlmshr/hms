@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { reception, useAuthDispatch, useAuthState } from "../Context";
+import { useEffect, useState } from "react";
+import {
+  fetchPatient,
+  reception,
+  useAuthDispatch,
+  useAuthState,
+} from "../Context";
 import { Navigation } from "./Navigation";
 
 export const Reception = (props) => {
@@ -9,7 +14,7 @@ export const Reception = (props) => {
   const allergies = JSON.parse(localStorage.getItem("currentUser")).allergies;
   const { loading, token } = useAuthState(),
     dispatch = useAuthDispatch();
-  
+
   const initialState = {
       name: name,
       phone: phone,
@@ -41,8 +46,10 @@ export const Reception = (props) => {
     } catch (error) {
       setState({ ...initialState, errorMessage: "Something went wrong!" });
     }
-  }
-
+  };
+  useEffect(async () => {
+    await fetchPatient(dispatch, token);
+  }, []);
 
   return (
     <div>
@@ -52,118 +59,99 @@ export const Reception = (props) => {
           <div className="offset-md-2 col-md-8">
             <div id="accordion">
               <div className="card">
-                <div className="card-header" id="headingOne">
-                  <h5 className="mb-0">
-                    <button
-                      className="btn btn-link"
-                      data-toggle="collapse"
-                      data-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
-                      Reception
-                    </button>
-                  </h5>
-                </div>
-
-                <div
-                  id="collapseOne"
-                  className="collapse show"
-                  aria-labelledby="headingOne"
-                  data-parent="#accordion"
-                >
-                  <div className="card-body">
-                    <form className="p-3" onSubmit={handleOnSubmit}>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="name"
-                          value={state.name}
-                          disabled
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="phone"
-                          className="form-control"
-                          name="phone"
-                          value={state.phone}
-                          onChange={handleOnChange}
-                          placeholder="Phone"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          className="form-control"
-                          name="email"
-                          value={state.email}
-                          onChange={handleOnChange}
-                          placeholder="Email"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="allergies"
-                          value={state.allergies}
-                          onChange={handleOnChange}
-                          placeholder="Allergies"
-                        />
-                      </div>
-                      <div className="input-group mb-3">
-                        <select
-                          name="department"
-                          className="custom-select"
-                          value={state.value}
-                          onChange={handleOnChange}
-                        >
-                          <option value="">Choose Department</option>
-                          <option value="Dental">Dental</option>
-                          <option value="ENT">ENT(Ear Nose Throat)</option>
-                          <option value="Gynecology">
-                            Gynecology(Female eproductive System)
-                          </option>
-                          <option value="Cardiology">Cardiology(Heart)</option>
-                          <option value="Pulmonology">
-                            Pulmonology(Lungs)
-                          </option>
-                          <option value="Neprology">Neprology(Kidney)</option>
-                          <option value="Neurology">
-                            Neurology(Nervous System)
-                          </option>
-                          <option value="Oncology">Oncology(Cancer)</option>
-                          <option value="Orthopaedics">
-                            Orthopaedics(Bones)
-                          </option>
-                          <option value="Dermatology">Dermatology(Skin)</option>
-                        </select>
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="complications"
-                          aria-describedby="error"
-                          value={state.complications}
-                          onChange={handleOnChange}
-                          placeholder="Complication Description"
-                        />
-                        <small id="error" className="form-text">
-                          {state.errorMessage}
-                        </small>
-                      </div>
-                      <button
-                        disabled={loading}
-                        type="submit"
-                        className="btn btn-primary"
+                <div className="card-body">
+                  <form className="p-3" onSubmit={handleOnSubmit}>
+                    <h5 className="pb-3">Reception</h5>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={state.name}
+                        disabled
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="phone"
+                        className="form-control"
+                        name="phone"
+                        value={state.phone}
+                        onChange={handleOnChange}
+                        placeholder="Phone"
+                        disabled
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        value={state.email}
+                        onChange={handleOnChange}
+                        placeholder="Email"
+                        disabled
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="allergies"
+                        value={state.allergies}
+                        onChange={handleOnChange}
+                        placeholder="Allergies"
+                        disabled
+                      />
+                    </div>
+                    <div className="input-group mb-3">
+                      <select
+                        name="department"
+                        className="custom-select"
+                        value={state.value}
+                        onChange={handleOnChange}
                       >
-                        Choose Doctor
-                      </button>
-                    </form>
-                  </div>
+                        <option value="">Choose Department</option>
+                        <option value="Dental">Dental</option>
+                        <option value="ENT">ENT(Ear Nose Throat)</option>
+                        <option value="Gynecology">
+                          Gynecology(Female eproductive System)
+                        </option>
+                        <option value="Cardiology">Cardiology(Heart)</option>
+                        <option value="Pulmonology">Pulmonology(Lungs)</option>
+                        <option value="Neprology">Neprology(Kidney)</option>
+                        <option value="Neurology">
+                          Neurology(Nervous System)
+                        </option>
+                        <option value="Oncology">Oncology(Cancer)</option>
+                        <option value="Orthopaedics">
+                          Orthopaedics(Bones)
+                        </option>
+                        <option value="Dermatology">Dermatology(Skin)</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="complications"
+                        aria-describedby="error"
+                        value={state.complications}
+                        onChange={handleOnChange}
+                        placeholder="Complication Description"
+                      />
+                      <small id="error" className="form-text">
+                        {state.errorMessage}
+                      </small>
+                    </div>
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="btn btn-primary"
+                    >
+                      Choose Doctor
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>

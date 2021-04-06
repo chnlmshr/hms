@@ -1,4 +1,16 @@
+// ======================== Common =============================
+
 const ROOT_URL = "http://localhost:9999";
+
+export async function logout(dispatch) {
+  dispatch({ type: "LOGOUT" });
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+  localStorage.removeItem("visitingInfo");
+}
+
+// ======================== Patient =============================
 
 export async function registerPatient(dispatch, registerPayload) {
   const requestOptions = {
@@ -50,57 +62,6 @@ export async function loginPatient(dispatch, loginPayload) {
   }
 }
 
-export async function registerDoctor(dispatch, registerPayload) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(registerPayload),
-  };
-
-  try {
-    dispatch({ type: "REQUEST_REGISTER" });
-    let response = await fetch(
-      `${ROOT_URL}/api/registerDoctor`,
-      requestOptions
-    );
-    let data = await response.json();
-
-    if (data.doctor) {
-      localStorage.setItem("currentUser", JSON.stringify(data));
-      dispatch({ type: "REGISTER_SUCCESS", payload: data });
-      return data;
-    }
-    dispatch({ type: "REGISTER_ERROR", error: data.err });
-    return;
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: "REGISTER_ERROR", error: "Something went wrong!" });
-  }
-}
-
-export async function loginDoctor(dispatch, loginPayload) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginPayload),
-  };
-
-  try {
-    dispatch({ type: "REQUEST_LOGIN" });
-    let response = await fetch(`${ROOT_URL}/api/loginDoctor`, requestOptions);
-    let data = await response.json();
-
-    if (data.doctor) {
-      localStorage.setItem("currentUser", JSON.stringify(data));
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
-      return data;
-    } else dispatch({ type: "LOGIN_ERROR", error: data.err });
-    return;
-  } catch (error) {
-    dispatch({ type: "LOGIN_ERROR", error: "Something went wrong" });
-  }
-}
-
 export async function fetchPatient(dispatch, token) {
   const requestOptions = {
     method: "GET",
@@ -122,6 +83,16 @@ export async function fetchPatient(dispatch, token) {
             "," +
             localStorage.getItem("currentUser").slice(1)
         );
+      else {
+        let token = JSON.parse(localStorage.getItem("currentUser")).token;
+        let patient = JSON.parse(localStorage.getItem("currentUser")).patient;
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify(data.patient).slice(0, -1) +
+            "," +
+            JSON.stringify({ token: token, patient: patient }).slice(1)
+        );
+      }
       return data.patient;
     } else {
       return { err: true };
@@ -129,39 +100,6 @@ export async function fetchPatient(dispatch, token) {
   } catch (error) {
     return { err: true };
   }
-}
-
-export async function fetchDoctor(dispatch, token) {
-  const requestOptions = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: "doctor " + token,
-    },
-  };
-
-  try {
-    let response = await fetch(`${ROOT_URL}/api/doctor`, requestOptions);
-    let data = await response.json();
-
-    if (data.doctor) {
-      dispatch({ type: "DOCTOR_FETCH_SUCCESS", payload: data });
-      localStorage.setItem("username", data.doctor.name);
-      return data.doctor;
-    } else {
-      return { err: true };
-    }
-  } catch (error) {
-    return { err: true };
-  }
-}
-
-export async function logout(dispatch) {
-  dispatch({ type: "LOGOUT" });
-  localStorage.removeItem("currentUser");
-  localStorage.removeItem("token");
-  localStorage.removeItem("username");
-  localStorage.removeItem("visitingInfo");
 }
 
 export async function changePassword(dispatch, passwordPayload) {
@@ -296,5 +234,106 @@ export async function report(dispatch, token) {
   } catch (error) {
     console.log(error);
     dispatch({ type: "REPORT_ERROR" });
+  }
+}
+
+// ======================== Doctor =============================
+
+export async function loginDoctor(dispatch, loginPayload) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(loginPayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_LOGIN" });
+    let response = await fetch(`${ROOT_URL}/api/loginDoctor`, requestOptions);
+    let data = await response.json();
+
+    if (data.doctor) {
+      localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+      return data;
+    } else dispatch({ type: "LOGIN_ERROR", error: data.err });
+    return;
+  } catch (error) {
+    dispatch({ type: "LOGIN_ERROR", error: "Something went wrong" });
+  }
+}
+
+export async function fetchDoctor(dispatch, token) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "doctor " + token,
+    },
+  };
+
+  try {
+    let response = await fetch(`${ROOT_URL}/api/doctor`, requestOptions);
+    let data = await response.json();
+
+    if (data.doctor) {
+      dispatch({ type: "DOCTOR_FETCH_SUCCESS", payload: data });
+      localStorage.setItem("username", data.doctor.name);
+      return data.doctor;
+    } else {
+      return { err: true };
+    }
+  } catch (error) {
+    return { err: true };
+  }
+}
+
+// ======================== Admin =============================
+
+export const loginAdmin = async (dispatch, loginPayload) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(loginPayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_LOGIN" });
+    let response = await fetch(`${ROOT_URL}/api/loginadmin`, requestOptions);
+    let data = await response.json();
+    if (data.patient) {
+      localStorage.setItem("currentUser", JSON.stringify(data));
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+      return data;
+    } else dispatch({ type: "LOGIN_ERROR", error: data.err });
+    return;
+  } catch (error) {
+    dispatch({ type: "LOGIN_ERROR", error: "Something went wrong" });
+  }
+};
+
+export async function registerDoctor(dispatch, registerPayload) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(registerPayload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_REGISTER" });
+    let response = await fetch(
+      `${ROOT_URL}/api/registerDoctor`,
+      requestOptions
+    );
+    let data = await response.json();
+
+    if (data.success) {
+      dispatch({ type: "REGISTER_SUCCESS", payload: { admin: true } });
+      return true;
+    }
+    dispatch({ type: "REGISTER_ERROR", error: data.err });
+    return false;
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "REGISTER_ERROR", error: "Something went wrong!" });
   }
 }

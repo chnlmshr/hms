@@ -5,19 +5,38 @@ import {
   updateAccount,
   logout,
   fetchPatient,
-  fetchDoctor,
 } from "../Context";
 import { Navigation } from "./Navigation";
 
 export const PatientAccount = (props) => {
-const email = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).email : "";
-const phone = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).phone : "";
-const allergies = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).allergies : "";
-const customaddress = Boolean(JSON.parse(localStorage.getItem("currentUser")).address) ? JSON.parse(localStorage.getItem("currentUser")).address.customaddress : "";
-const city = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.city : "";
-const addstate = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.state : "";
-const zip = JSON.parse(localStorage.getItem("currentUser")).address ? JSON.parse(localStorage.getItem("currentUser")).address.zip : "";
-const blood_group = Boolean(JSON.parse(localStorage.getItem("currentUser")).blood_group) ? JSON.parse(localStorage.getItem("currentUser")).blood_group : "";
+  const email = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).email
+    : "";
+  const phone = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).phone
+    : "";
+  const allergies = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).allergies
+    : "";
+  const customaddress = Boolean(
+    JSON.parse(localStorage.getItem("currentUser")).address
+  )
+    ? JSON.parse(localStorage.getItem("currentUser")).address.custom
+    : "";
+  const city = JSON.parse(localStorage.getItem("currentUser")).address
+    ? JSON.parse(localStorage.getItem("currentUser")).address.city
+    : "";
+  const addstate = JSON.parse(localStorage.getItem("currentUser")).address
+    ? JSON.parse(localStorage.getItem("currentUser")).address.state
+    : "";
+  const zip = JSON.parse(localStorage.getItem("currentUser")).address
+    ? JSON.parse(localStorage.getItem("currentUser")).address.zip
+    : "";
+  const blood_group = Boolean(
+    JSON.parse(localStorage.getItem("currentUser")).blood_group
+  )
+    ? JSON.parse(localStorage.getItem("currentUser")).blood_group
+    : "";
   const initialState = {
     phone: "" || phone,
     email: "" || email,
@@ -47,12 +66,14 @@ const blood_group = Boolean(JSON.parse(localStorage.getItem("currentUser")).bloo
         ...state,
         token: "patient " + token,
       });
-      if (res.success)
+      if (res.success) {
+        await fetchPatient(dispatch, token);
         setState({
-          ...initialState,
+          ...state,
           successMessage: "Data successfully Updated!",
         });
-      else setState({ ...initialState, errorMessage: "Something went wrong!" });
+      } else
+        setState({ ...initialState, errorMessage: "Something went wrong!" });
     } catch (error) {
       setState({ ...initialState, errorMessage: "Something went wrong!" });
     }
@@ -60,7 +81,7 @@ const blood_group = Boolean(JSON.parse(localStorage.getItem("currentUser")).bloo
 
   return (
     <div>
-      <Navigation homelink="/patient" active="account"/>
+      <Navigation homelink="/patient" active="account" />
       <div className="container">
         <div className="row my-5 py-md-5">
           <div className="offset-md-2 col-md-8">

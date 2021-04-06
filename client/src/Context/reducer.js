@@ -4,6 +4,9 @@ let patient = localStorage.getItem("currentUser")
 let doctor = localStorage.getItem("currentUser")
   ? JSON.parse(localStorage.getItem("currentUser")).doctor
   : false;
+let admin = localStorage.getItem("currentUser")
+  ? JSON.parse(localStorage.getItem("currentUser")).admin
+  : false;
 let token = localStorage.getItem("currentUser")
   ? JSON.parse(localStorage.getItem("currentUser")).token
   : false;
@@ -11,6 +14,7 @@ let token = localStorage.getItem("currentUser")
 export const initialState = {
   patient: false || patient,
   doctor: false || doctor,
+  admin: false || admin,
   token: false || token,
   loading: false,
   errorMessage: null,
@@ -28,6 +32,7 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         patient: action.payload.patient,
         doctor: action.payload.doctor,
+        admin: action.payload.admin,
         token: action.payload.token,
         loading: false,
       };
@@ -55,6 +60,7 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         patient: action.payload.patient,
         doctor: action.payload.doctor,
+        admin: action.payload.admin,
         token: action.payload.token,
         loading: false,
       };

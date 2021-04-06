@@ -4,9 +4,9 @@ import { Redirect, Route } from "react-router-dom";
 import { useAuthState } from "../Context";
 
 const AppRoute = ({ component: Component, path, type, ...rest }) => {
-  const { doctor, patient, token } = useAuthState();
+  const { doctor, patient, token, admin } = useAuthState();
   if (Boolean(token)) {
-    if (Boolean(patient) && type == "patient")
+    if (Boolean(patient) && type === "patient")
       return (
         <Route
           path={path}
@@ -14,7 +14,15 @@ const AppRoute = ({ component: Component, path, type, ...rest }) => {
           {...rest}
         />
       );
-    else if (Boolean(doctor) && type == "doctor")
+    else if (Boolean(doctor) && type === "doctor")
+      return (
+        <Route
+          path={path}
+          render={(props) => <Component {...props} />}
+          {...rest}
+        />
+      );
+    else if (Boolean(admin) && type === "admin")
       return (
         <Route
           path={path}
@@ -30,11 +38,19 @@ const AppRoute = ({ component: Component, path, type, ...rest }) => {
           {...rest}
         />
       );
-    else
+    else if (Boolean(doctor))
       return (
         <Route
           path={path}
           render={(props) => <Redirect to="/doctor" />}
+          {...rest}
+        />
+      );
+    else if (Boolean(admin))
+      return (
+        <Route
+          path={path}
+          render={(props) => <Redirect to="/admin" />}
           {...rest}
         />
       );
