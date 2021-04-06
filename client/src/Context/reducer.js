@@ -192,6 +192,11 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         loading: false,
       };
+    case "DOC_REGISTERED":
+      return {
+        ...initialState,
+        loading: false,
+      };
 
     default:
       throw new Error(`Unhandled action type: ${action.type}`);

@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const DoctorSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -17,11 +16,9 @@ const DoctorSchema = mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true,
   },
   degree: {
     type: String,
-    required: true,
   },
   date: {
     type: Number,
@@ -29,7 +26,6 @@ const DoctorSchema = mongoose.Schema({
   },
   speciality: {
     type: String,
-    required: true,
   },
   avgDiagnosisTime: {
     type: Number,

@@ -325,9 +325,8 @@ export async function registerDoctor(dispatch, registerPayload) {
       requestOptions
     );
     let data = await response.json();
-
-    if (data.success) {
-      dispatch({ type: "REGISTER_SUCCESS", payload: { admin: true } });
+    if (data.doctor) {
+      dispatch({ type: "DOC_REGISTERED" });
       return true;
     }
     dispatch({ type: "REGISTER_ERROR", error: data.err });
