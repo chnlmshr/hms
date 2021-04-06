@@ -11,7 +11,11 @@ function registerDoc(req, res) {
         res.send({ err: "Something went wrong!" });
       } else
        {
-         if(admin)
+        Admin.findById(payload._id, (err, admin) => {
+          if (err || !admin) {
+            res.send({ err: "Something went wrong!" });
+          } 
+         else
          {
             bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
               if (err) {
