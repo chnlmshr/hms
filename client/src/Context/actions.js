@@ -324,29 +324,6 @@ export async function patientList(dispatch, token) {
   }
 }
 
-export async function view(dispatch, payload) {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  };
-
-  try {
-    dispatch({ type: "REQUEST_VIEW" });
-    let response = await fetch(`${ROOT_URL}/api/view`, requestOptions);
-    let data = await response.json();
-    if (Boolean(data.success)) {
-      localStorage.setItem("viewingInfo", JSON.stringify(data));
-      dispatch({ type: "VIEW_SUCCESS" });
-    } else dispatch({ type: "VIEW_ERROR" });
-    return data;
-  } catch (error) {
-    dispatch({ type: "VIEW_ERROR" });
-  }
-}
-
 // ======================== Admin =============================
 
 export const loginAdmin = async (dispatch, loginPayload) => {

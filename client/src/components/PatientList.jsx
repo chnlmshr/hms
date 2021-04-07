@@ -2,17 +2,11 @@ import { useEffect, useState } from "react";
 import { useAuthDispatch, useAuthState } from "../Context";
 import { patientList, visit } from "../Context";
 import { Navigation } from "./Navigation";
-// import {  } from "";
 
 const PatientCard = (props) => {
-  const dispatch = useAuthDispatch(),
-    { token, loading } = useAuthState();
   const onClickHandler = async () => {
-    let data = await visit(dispatch, {
-      token: "doctor " + token,
-      patient: props.id,
-    });
-    if (data && data.success) props.PROPS.history.push("/visit");
+    localStorage.setItem("patientId", props.id);
+    props.PROPS.history.push("/doctor/report");
   };
   return (
     <div className="row mt-3 p-3 choose-pat-card">
@@ -24,11 +18,7 @@ const PatientCard = (props) => {
         <div className="pat-phone">Phone: {props.phone}</div>
       </div>
       <div className="col-2 offset-2">
-        <button
-          className="btn btn-primary"
-          onClick={onClickHandler}
-          disabled={loading}
-        >
+        <button className="btn btn-primary" onClick={onClickHandler}>
           View
         </button>
       </div>
@@ -47,41 +37,6 @@ const PatientList = (props) => {
 
   useEffect(async () => {
     let data = await patientList(dispatch, token);
-    data = {
-      success: true,
-      patients: [
-        {
-          _id: "27483749324987huffh3",
-          name: "Mr. Oslo",
-          DOB: "15/11/2021 T gmt 557:75:58",
-          phone: 9898989898,
-        },
-        {
-          _id: "27483749324987huffh3",
-          name: "Mr. Helsinki",
-          DOB: "15/11/2021 T gmt 557:75:58",
-          phone: 9898989898,
-        },
-        {
-          _id: "27483749324987huffh3",
-          name: "Ms. Tokyo",
-          DOB: "15/11/2021 T gmt 557:75:58",
-          phone: 9898989898,
-        },
-        {
-          _id: "27483749324987huffh3",
-          name: "Mr. Pableto",
-          DOB: "15/11/2021 T gmt 557:75:58",
-          phone: 9898989898,
-        },
-        {
-          _id: "27483749324987huffh3",
-          name: "Mr. Salva",
-          DOB: "15/11/2021 T gmt 557:75:58",
-          phone: 9898989898,
-        },
-      ],
-    };
     if (data && data.success) {
       setState({
         success: true,

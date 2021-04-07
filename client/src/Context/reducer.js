@@ -191,24 +191,6 @@ export const AuthReducer = (initialState, action) => {
         loading: false,
       };
 
-    case "REQUEST_VIEW":
-      return {
-        ...initialState,
-        loading: true,
-      };
-
-    case "VIEW_SUCCESS":
-      return {
-        ...initialState,
-        loading: false,
-      };
-
-    case "VIEW_ERROR":
-      return {
-        ...initialState,
-        loading: false,
-      };
-
     case "REQUEST_REPORT":
       return {
         ...initialState,
