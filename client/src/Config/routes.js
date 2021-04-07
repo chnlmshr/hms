@@ -9,6 +9,7 @@ import ChooseDoctor from "../components/ChooseDoctor";
 import Visit from "../components/Visit";
 import Report from "../components/Report";
 import { Admin, AdminLogin } from "../components/Admin";
+import PatientList from "../components/PatientList";
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
   {
     path: "/doctor/changepassword",
     component: ChangePassword,
+    type: "doctor",
+  },
+  {
+    path: "/patientlist",
+    component: PatientList,
     type: "doctor",
   },
   {

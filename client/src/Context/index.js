@@ -10,6 +10,7 @@ import {
   updateAccount,
   reception,
   chooseDoctor,
+  patientList,
   report,
   visit,
   loginAdmin,
@@ -36,4 +37,5 @@ export {
   visit,
   loginAdmin,
   changePasswordAdmin,
+  patientList,
 };
