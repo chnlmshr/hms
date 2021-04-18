@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthDispatch, useAuthState } from "../Context";
-import { report } from "../Context/actions";
+import { doctorReport } from "../Context";
 import { Navigation } from "./Navigation";
-const Report = (props) => {
+const DoctorReport = (props) => {
   const initialState = {
     dateCreated: "",
     lastModified: "",
@@ -20,15 +20,23 @@ const Report = (props) => {
     { token, loading } = useAuthState();
   const [state, setState] = useState(initialState);
   useEffect(async () => {
-    const data = await report(dispatch, token);
-    if (data && data.success) {
-      setState(data.report);
+    const patientId = localStorage.getItem("patientId");
+    if (Boolean(patientId)) {
+      const data = await doctorReport(dispatch, {
+        token: "doctor " + token,
+        patientId: patientId,
+      });
+      if (data && data.success) {
+        setState(data.report);
+      }
+    } else {
+      props.history.push("/patientlist");
     }
   }, []);
   if (!loading && state.name === "") {
     return (
       <div>
-        <Navigation homelink="/patient" active="report" />
+        <Navigation homelink="/doctor" active="report" />
         <div className="container">
           <div className="row mt-5"></div>
           <div className="row mt-5"></div>
@@ -59,7 +67,7 @@ const Report = (props) => {
   } else
     return (
       <div>
-        <Navigation homelink="/patient" active="report" />
+        <Navigation homelink="/doctor" active="report" />
         <div className="container">
           <div className="row m-2 m-md-5">
             <div className="offset-md-2 col-md-8 report p-5 section-to-print">
@@ -81,10 +89,12 @@ const Report = (props) => {
               <hr />
               <div className="row mt-3">
                 <div className="col-5">{state.name}</div>
-                <div className="col-4">DOB: {state.dateofbirth.split("T")[0]}</div>
+                <div className="col-4">
+                  DOB: {state.dateofbirth.split("T")[0]}
+                </div>
                 <div className="col-3">{state.sex}</div>
               </div>
-              
+
               <hr />
               <div className="row mt-3">
                 <div className="col-6">
@@ -119,4 +129,4 @@ const Report = (props) => {
     );
 };
 
-export default Report;
+export default DoctorReport;
