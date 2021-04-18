@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthDispatch, useAuthState } from "../Context";
 import { patientList, visit } from "../Context";
 import { Navigation } from "./Navigation";
+
 const PatientCard = (props) => {
   const onClickHandler = async () => {
     localStorage.setItem("patientId", props.id);

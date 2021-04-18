@@ -225,7 +225,7 @@ export async function report(dispatch, token) {
 
   try {
     dispatch({ type: "REQUEST_REPORT" });
-    let response = await fetch(`${ROOT_URL}/api/patientreport`, requestOptions);
+    let response = await fetch(`${ROOT_URL}/api/report`, requestOptions);
     let data = await response.json();
     if (Boolean(data.success)) {
       dispatch({ type: "REPORT_SUCCESS" });
@@ -321,32 +321,6 @@ export async function patientList(dispatch, token) {
     return data;
   } catch (error) {
     dispatch({ type: "CHOOSE_PATIENT_ERROR" });
-  }
-}
-
-export async function doctorReport(dispatch, token) {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: "doctor " + token,
-      id: localStorage.getItem("patientId"),
-    }),
-  };
-
-  try {
-    dispatch({ type: "REQUEST_REPORT" });
-    let response = await fetch(`${ROOT_URL}/api/doctorreport`, requestOptions);
-    let data = await response.json();
-    if (Boolean(data.success)) {
-      dispatch({ type: "REPORT_SUCCESS" });
-    } else dispatch({ type: "REPORT_ERROR" });
-    return data;
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: "REPORT_ERROR" });
   }
 }
 
