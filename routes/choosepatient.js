@@ -18,24 +18,24 @@ router.get("/choosedoctor", (req, res) => {
         Reception.find({ consultant: payload._id }).exec((err, reception) => {
           if (!reception) {
             res.send({
-              success: false,
+             err:true,
+             success:false,
             });
           } 
           else
            {
             reception.forEach(element=>{
-
                 Patient.findById(element.patient).exec((err,patient)=>{
                     if(err)
                     res.send({
                         err:true,
-                        success:false
                     })
                     else{
                         list.push(patient)
-                        res.send({success:true})
+
                     }
                 });
+            })
                 list.forEach(element=>{
                     
                   patlist.push({_id:element._id,name:element.name,phone:element.phone,age:element.age})
@@ -45,15 +45,10 @@ router.get("/choosedoctor", (req, res) => {
                         success: true,
                         patlist:patlist,
                       });
-              
-            })
             
                 }
               })
-              .catch((err) => {
-                console.log(err);
-                res.send({ success: false});
-              });
+              
           }
         });
     });

@@ -4,7 +4,7 @@ const Doctor = require("../models/Doctor");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
-router.get("/report", (req, res) => {
+router.get("/patientreport", (req, res) => {
   const token = req.headers["authorization"].split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
     if (err || !payload) {
@@ -51,5 +51,64 @@ router.get("/report", (req, res) => {
   });
 });
 
+
+router.post("/doctorreport", (req, res) => {
+  const token = req.body.token.split(" ")[1];
+  const id=req.body.id;
+  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+    if (err || !payload) {
+      res.send({ err: "Something went wrong!" });
+    }
+
+    Doctor.findById(payload._id ).exec((err, doctor) => {
+      if (doctor) {
+        Reception.findOne({patient:id}).exec((err,reception)=>{
+          if(reception){
+            res.send({success:true,reception:reception})
+        
+          }
+          else
+          {
+            res.send({success:false}) 
+          }
+
+        });
+       
+      }    
+});
+  });
+});
+
+
+router.post("/add", (req, res) => {
+  const token = req.body.token.split(" ")[1];
+  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+    if (err || !payload) {
+      res.send({ err: "Something went wrong!" });
+    } else {
+      var consultantWord = req.body.consultantWord;
+      var medicines = req.body.medicines;
+      Reception.findOne({ patient: payload._id }, (err, reception) => {
+        if (err) res.send({ success: false });
+        else {
+          Reception.findOneAndUpdate(
+            { patient: payload._id },
+            {
+              consultantWord:consultantWord,
+              medicines:medicines
+            }
+          )
+            .then((reception) => {
+              res.send({ success: true ,reception:reception});
+            })
+            .catch((err) => {
+              console.log(err);
+              res.send({ success: false });
+            });
+        }
+      });
+    }
+  });
+});
 module.exports = router;
  
