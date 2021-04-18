@@ -15,6 +15,7 @@ import {
   visit,
   loginAdmin,
   changePasswordAdmin,
+  doctorReport
 } from "./actions";
 import { AuthProvider, useAuthDispatch, useAuthState } from "./context";
 
@@ -38,4 +39,5 @@ export {
   loginAdmin,
   changePasswordAdmin,
   patientList,
+  doctorReport
 };

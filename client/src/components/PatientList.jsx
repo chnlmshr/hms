@@ -67,7 +67,7 @@ const PatientList = (props) => {
   )
     return (
       <div>
-        <Navigation homelink="/doctor" active="paientlist" />
+        <Navigation homelink="/doctor" active="patientlist" />
         <div className="container">
           <div className="row mt-5"></div>
           <div className="row mt-5"></div>
@@ -102,7 +102,7 @@ const PatientList = (props) => {
   else
     return (
       <div>
-        <Navigation homelink="/doctor" />
+        <Navigation homelink="/doctor" active="patientlist"/>
         <div className="container">
           <div className="row mt-5">
             <div className="col-md-4 offset-md-4">

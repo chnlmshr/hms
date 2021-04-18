@@ -10,6 +10,7 @@ import Visit from "../components/Visit";
 import Report from "../components/Report";
 import { Admin, AdminLogin } from "../components/Admin";
 import PatientList from "../components/PatientList";
+import DoctorReport from "../components/DoctorReport";
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
   {
     path: "/doctor/account",
     component: DoctorAccount,
+    type: "doctor",
+  },
+  {
+    path: "/doctor/report",
+    component: DoctorReport,
     type: "doctor",
   },
   {

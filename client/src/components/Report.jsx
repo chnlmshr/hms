@@ -59,7 +59,7 @@ const Report = (props) => {
   } else
     return (
       <div>
-        <Navigation homelink="patient" active="report" />
+        <Navigation homelink="/patient" active="report" />
         <div className="container">
           <div className="row m-2 m-md-5">
             <div className="offset-md-2 col-md-8 report p-5 section-to-print">

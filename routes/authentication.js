@@ -217,7 +217,7 @@ router.post("/updatedoctoraccount", (req, res) => {
       const phone = req.body.phone;
       // const sex = req.body.sex;
       const degree = req.body.degree;
-      const speciality = req.body.allergies;
+      const speciality = req.body.speciality;
       const avgDiagnosisTime  = req.body.avgDiagnosisTime
       
 

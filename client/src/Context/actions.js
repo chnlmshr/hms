@@ -4,10 +4,11 @@ const ROOT_URL = "http://localhost:9999";
 
 export async function logout(dispatch) {
   dispatch({ type: "LOGOUT" });
-  localStorage.removeItem("currentUser");
-  localStorage.removeItem("token");
-  localStorage.removeItem("username");
-  localStorage.removeItem("visitingInfo");
+  // localStorage.removeItem("currentUser");
+  // localStorage.removeItem("token");
+  // localStorage.removeItem("username");
+  // localStorage.removeItem("visitingInfo");
+  localStorage.clear();
 }
 
 // ======================== Patient =============================
@@ -321,6 +322,29 @@ export async function patientList(dispatch, token) {
     return data;
   } catch (error) {
     dispatch({ type: "CHOOSE_PATIENT_ERROR" });
+  }
+}
+
+export async function doctorReport(dispatch, payload) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_REPORT" });
+    let response = await fetch(`${ROOT_URL}/api/doctorreport`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "REPORT_SUCCESS" });
+    } else dispatch({ type: "REPORT_ERROR" });
+    return data;
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "REPORT_ERROR" });
   }
 }
 
