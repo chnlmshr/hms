@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthDispatch, useAuthState } from "../Context";
+import { EditDoctorReport, useAuthDispatch, useAuthState } from "../Context";
 import { doctorReport } from "../Context";
 import { Navigation } from "./Navigation";
 const DoctorReport = (props) => {
@@ -15,6 +15,8 @@ const DoctorReport = (props) => {
     consultantWord: "",
     allergies: "",
     medicines: "",
+    errMessage: "",
+    successMessage: "",
   };
   const dispatch = useAuthDispatch(),
     { token, loading } = useAuthState();
@@ -26,6 +28,7 @@ const DoctorReport = (props) => {
         token: "doctor " + token,
         patientId: patientId,
       });
+      console.log(data);
       if (data && data.success) {
         setState(data.report);
       }
@@ -33,6 +36,35 @@ const DoctorReport = (props) => {
       props.history.push("/patientlist");
     }
   }, []);
+  const handleOnChange = (event) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+      successMessage: "",
+      errMessage: "",
+    });
+  };
+  const update = async () => {
+    const data = await EditDoctorReport(dispatch, {
+      token: "doctor " + token,
+      patientId: localStorage.getItem("patientId"),
+      consultantWord: state.consultantWord,
+      medicines: state.medicines,
+    });
+    if (data && data.success) {
+      setState({
+        ...state,
+        successMessage: "Report Updated Successfully!",
+        errorMessage: "",
+      });
+    } else {
+      setState({
+        ...state,
+        errorMessage: "Something went wrong!",
+        successMessage: "",
+      });
+    }
+  };
   if (!loading && state.name === "") {
     return (
       <div>
@@ -110,16 +142,51 @@ const DoctorReport = (props) => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-12 text-justify mt-4">
-                  <strong>Consultats's Word: </strong> {state.consultantWord}
+                <div className="col-6 text-justify mt-4">
+                  <div className="form-group">
+                    <label htmlFor="consultantWord">
+                      <strong>Consultats's Word: </strong>
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="consultantWord"
+                      name="consultantWord"
+                      rows="3"
+                      onChange={handleOnChange}
+                      value={state.consultantWord}
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="col-6 text-justify mt-4">
+                  <div className="form-group">
+                    <label htmlFor="medicines">
+                      <strong>Medicines: </strong>
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="medicines"
+                      name="medicines"
+                      rows="3"
+                      onChange={handleOnChange}
+                      value={state.medicines}
+                    ></textarea>
+                  </div>
                 </div>
               </div>
               <div className="row mt-4">
-                <div className="col-6">
+                <div className="col-12">
                   <strong>Allergies:</strong> {state.allergies}
                 </div>
-                <div className="col-6">
-                  <strong>Medicines:</strong> {state.medicines}
+              </div>
+              <div className="row mt-4">
+                <div className="col-10">
+                  <small className="text-danger">{state.errorMessage}</small>
+                  <small className="text-success">{state.successMessage}</small>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-primary" onClick={update}>
+                    Update
+                  </button>
                 </div>
               </div>
             </div>

@@ -226,7 +226,7 @@ export async function report(dispatch, token) {
 
   try {
     dispatch({ type: "REQUEST_REPORT" });
-    let response = await fetch(`${ROOT_URL}/api/report`, requestOptions);
+    let response = await fetch(`${ROOT_URL}/api/patientreport`, requestOptions);
     let data = await response.json();
     if (Boolean(data.success)) {
       dispatch({ type: "REPORT_SUCCESS" });
@@ -337,6 +337,32 @@ export async function doctorReport(dispatch, payload) {
   try {
     dispatch({ type: "REQUEST_REPORT" });
     let response = await fetch(`${ROOT_URL}/api/doctorreport`, requestOptions);
+    let data = await response.json();
+    if (Boolean(data.success)) {
+      dispatch({ type: "REPORT_SUCCESS" });
+    } else dispatch({ type: "REPORT_ERROR" });
+    return data;
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "REPORT_ERROR" });
+  }
+}
+
+export async function EditDoctorReport(dispatch, payload) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  };
+
+  try {
+    dispatch({ type: "REQUEST_REPORT" });
+    let response = await fetch(
+      `${ROOT_URL}/api/editdoctorreport`,
+      requestOptions
+    );
     let data = await response.json();
     if (Boolean(data.success)) {
       dispatch({ type: "REPORT_SUCCESS" });

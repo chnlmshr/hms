@@ -21,6 +21,7 @@ const Report = (props) => {
   const [state, setState] = useState(initialState);
   useEffect(async () => {
     const data = await report(dispatch, token);
+    console.log(data);
     if (data && data.success) {
       setState(data.report);
     }
@@ -81,10 +82,12 @@ const Report = (props) => {
               <hr />
               <div className="row mt-3">
                 <div className="col-5">{state.name}</div>
-                <div className="col-4">DOB: {state.dateofbirth.split("T")[0]}</div>
+                <div className="col-4">
+                  DOB: {state.dateofbirth.split("T")[0]}
+                </div>
                 <div className="col-3">{state.sex}</div>
               </div>
-              
+
               <hr />
               <div className="row mt-3">
                 <div className="col-6">
