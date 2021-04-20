@@ -28,7 +28,6 @@ const DoctorReport = (props) => {
         token: "doctor " + token,
         patientId: patientId,
       });
-      console.log(data);
       if (data && data.success) {
         setState(data.report);
       }

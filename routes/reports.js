@@ -114,7 +114,16 @@ router.post("/editdoctorreport", (req, res) => {
         }
       )
         .then((reception) => {
-          res.send({ success: true });
+          Doctor.findByIdAndUpdate(payload._id, {
+            $inc: { patientsInQueue: -1 },
+          })
+            .then((doctor) => {
+              res.send({ success: true });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.send({ success: false });
+            });
         })
         .catch((err) => {
           console.log(err);
