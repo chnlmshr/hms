@@ -33,6 +33,10 @@ var ReceptionSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  bedAllocated:{
+    type:Boolean,
+    required:false,
+  }
 });
 var Reception = mongoose.model("Reception", ReceptionSchema);
 module.exports = Reception;
