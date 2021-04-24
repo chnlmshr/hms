@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Admin=require("../models/Admin");
 const crypto=require("crypto");
+const Ward = require("../models/Ward");
 const router = require("express").Router();
 
 router.post("/loginAdmin",(req, res) => {
@@ -101,6 +102,62 @@ router.post("/changepasswordadmin", (req, res) => {
         }
     }
 });
+});
+
+router.post("/bedUpdate",(req,res)=>{
+  const admin = req.body.token.split(" ")[0],
+      token = req.body.token.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+      if (err || !payload) {
+        res.send({ err: "Something went wrong!" });
+      }
+      else 
+      {
+      const speciality = req.body.speciality;
+      const maxCapacity = req.body.maxCapacity;
+     
+
+      Ward.findOne({speciality}).exec((err,ward)=>{
+        if(!ward)
+        {
+          ward.maxCapacity=maxCapacity;
+          for (var i=1;i<=maxCapacity;i++)
+          {
+            ward.total_occupied.push[i]
+          }
+
+        }
+        else
+        {
+          if(ward.maxCapacity<maxCapacity)
+          {
+            for(var i=ward.maxCapacity+1;i<=maxCapacity;i++)
+            {
+              ward.total_occupied.push[i]
+            }
+          }
+          else if(ward.maxCapacity>maxCapacity)
+          {
+            if(ward.total_occupied.length>=ward.maxCapacity-maxCapacity)
+            {
+              ward.total_occupied.slice[ward.maxCapacity-maxCapacity]
+
+            }
+          }
+
+        }
+      })
+      .then((ward) => {
+      
+        res.send({ success: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send({ success: false });
+      });
+    
+      }
+    });
 });
               
   module.exports=router;

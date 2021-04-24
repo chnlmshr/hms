@@ -1,6 +1,7 @@
 const Reception = require("../models/Reception");
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
+const Ward = require("../models/Ward");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
@@ -106,8 +107,11 @@ router.post("/editdoctorreport", (req, res) => {
     } else {
       var consultantWord = req.body.consultantWord;
       var medicines = req.body.medicines;
+      var Allocatedbed=req.body.bedAllocated;
+      var patient=req.body.patientId;
+     
       Reception.findOneAndUpdate(
-        { patient: req.body.patientId },
+        patient,
         {
           consultantWord: consultantWord,
           medicines: medicines,
@@ -117,19 +121,105 @@ router.post("/editdoctorreport", (req, res) => {
           Doctor.findByIdAndUpdate(payload._id, {
             $inc: { patientsInQueue: -1 },
           })
+    
             .then((doctor) => {
-              res.send({ success: true });
+              if(Allocatedbed)
+              {
+                Reception.findOne({patient})
+                .then((reception)=>{
+                  Ward.findOne({speciality:reception.speciality}).exec((err,ward)=>{
+                    if(ward.total_occupied.length > 0)
+                    {
+                      Reception.findByIdAndUpdate(reception._id,{ 
+                      bedAllocated:ward.total_occupied[0]
+                      
+
+                      })
+                      .then((reception)=>{
+                        Ward.findByIdAndUpdate(ward._id,{
+                          total_occupied:ward.total_occupied.slice[1]
+                        })
+                        .then((ward)=>{
+                          res.send({success:true})
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                          res.send({ success: false });
+                        });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.send({ success: false });
+                      });
+                     
+                      
+                    }
+                    else
+                    {
+                      res.send({success:false,msg:"No Beds Available! Please search it in other hospitals"})
+        
+                    }
+                })
+              })
+            }
+            else
+            {
+              if(bedAllocated!=0)
+              {
+                Reception.findOne({patient})
+                .then((reception)=>{
+                  Ward.findOne({speciality:reception.speciality}).exec((err,ward)=>{
+                    ward.total_occupied.push[bedAllocated];
+                      ward.total_occupied.sort();
+                    Ward.findByIdAndUpdate(ward._id,{
+                      total_occupied:total_occupied
+                    })
+                    .then((ward)=>{
+                      Reception.findByIdAndUpdate(reception._id,{bedAllocated:0})
+                      .then((reception)=>{
+                        res.send({success:true})
+
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.send({ success: false });
+                      });
+                     
+
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      res.send({ success: false });
+                    });
+                   
+                         
+
+                      
+                })
+
+              })
+              .catch((err) => {
+                console.log(err);
+                res.send({ success: false });
+              });
+             
+                
+              }
+            }
+
             })
             .catch((err) => {
               console.log(err);
               res.send({ success: false });
             });
+
+            
         })
         .catch((err) => {
           console.log(err);
           res.send({ success: false });
         });
-    }
+    } 
   });
 });
 module.exports = router;

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 var WardSchema = mongoose.Schema({
   specilaity: {
     type: String,
-    required: true
+    required: true,
   },
   max_capacity: {
     type: Number,
@@ -11,8 +11,8 @@ var WardSchema = mongoose.Schema({
   },
   total_occupied:
   {
-    type:Number,
-    required:true
+    type:[Number],
+    required:true,
   }
 });
 
