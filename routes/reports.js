@@ -23,20 +23,20 @@ router.get("/patientreport", (req, res) => {
           Doctor.findById(reception.consultant).exec((err, doctor) => {
             if (doctor) {
               Repo.consultant = doctor.name;
-            } else {
-              res.send({ success: false });
-            }
-          });
-          Patient.findById(payload._id).exec((err, patient) => {
-            if (patient) {
-              Repo.name = patient.name;
-              Repo.blood_group = patient.blood_group;
-              Repo.dateofbirth = patient.dateofbirth;
-              Repo.sex = patient.sex;
-              Repo.allergies = patient.allergies;
-              res.send({
-                success: true,
-                report: Repo,
+              Patient.findById(payload._id).exec((err, patient) => {
+                if (patient) {
+                  Repo.name = patient.name;
+                  Repo.blood_group = patient.blood_group;
+                  Repo.dateofbirth = patient.dateofbirth;
+                  Repo.sex = patient.sex;
+                  Repo.allergies = patient.allergies;
+                  res.send({
+                    success: true,
+                    report: Repo,
+                  });
+                } else {
+                  res.send({ success: false });
+                }
               });
             } else {
               res.send({ success: false });
