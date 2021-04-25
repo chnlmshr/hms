@@ -1,5 +1,4 @@
 const Doctor = require("../models/Doctor");
-// const Room = require("../models/Rooms");
 const Patient = require("../models/Patient"),
   jwt = require("jsonwebtoken"),
   bcrypt = require("bcryptjs"),

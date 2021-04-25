@@ -34,8 +34,9 @@ var ReceptionSchema = mongoose.Schema({
     required: false,
   },
   bedAllocated:{
-    type:Boolean,
+    type:Number,
     required:false,
+    default:0,
   }
 });
 var Reception = mongoose.model("Reception", ReceptionSchema);
