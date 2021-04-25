@@ -17,6 +17,8 @@ const DoctorReport = (props) => {
     medicines: "",
     errMessage: "",
     successMessage: "",
+    allocateBed: false,
+    bedNumber: 0,
   };
   const dispatch = useAuthDispatch(),
     { token, loading } = useAuthState();
@@ -36,11 +38,16 @@ const DoctorReport = (props) => {
     }
   }, []);
   const handleOnChange = (event) => {
+    console.log(state);
     setState({
       ...state,
       [event.target.name]: event.target.value,
       successMessage: "",
       errMessage: "",
+      allocateBed:
+        event.target.name === "allocateBed"
+          ? !state.allocateBed
+          : state.allocateBed,
     });
   };
   const update = async () => {
@@ -49,6 +56,7 @@ const DoctorReport = (props) => {
       patientId: localStorage.getItem("patientId"),
       consultantWord: state.consultantWord,
       medicines: state.medicines,
+      bedAllocated: state.allocateBed,
     });
     if (data && data.success) {
       setState({
@@ -59,7 +67,7 @@ const DoctorReport = (props) => {
     } else {
       setState({
         ...state,
-        errorMessage: "Something went wrong!",
+        errorMessage: "Something went wrong!" || data.msg,
         successMessage: "",
       });
     }
@@ -141,7 +149,7 @@ const DoctorReport = (props) => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-6 text-justify mt-4">
+                <div className="col-md-6 text-justify mt-4">
                   <div className="form-group">
                     <label htmlFor="consultantWord">
                       <strong>Consultats's Word: </strong>
@@ -156,7 +164,7 @@ const DoctorReport = (props) => {
                     ></textarea>
                   </div>
                 </div>
-                <div className="col-6 text-justify mt-4">
+                <div className="col-md-6 text-justify mt-4">
                   <div className="form-group">
                     <label htmlFor="medicines">
                       <strong>Medicines: </strong>
@@ -173,16 +181,31 @@ const DoctorReport = (props) => {
                 </div>
               </div>
               <div className="row mt-4">
-                <div className="col-12">
+                <div className="col-md-8">
                   <strong>Allergies:</strong> {state.allergies}
+                </div>
+                <div className="col-md-4">
+                  <input
+                    type="checkbox"
+                    name="allocateBed"
+                    id="allocateBed"
+                    className="m-2"
+                    checked={state.allocateBed}
+                    onChange={handleOnChange}
+                  />
+                  <label htmlFor="allocateBed">
+                    {state.bedNumber > 0
+                      ? "Allocated Bed " + state.bedNumber
+                      : "Allocate Bed"}
+                  </label>
                 </div>
               </div>
               <div className="row mt-4">
-                <div className="col-10">
+                <div className="col-md-9">
                   <small className="text-danger">{state.errorMessage}</small>
                   <small className="text-success">{state.successMessage}</small>
                 </div>
-                <div className="col-2">
+                <div className="col-md-3">
                   <button className="btn btn-primary" onClick={update}>
                     Update
                   </button>
