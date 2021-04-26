@@ -18,11 +18,35 @@ const DoctorReport = (props) => {
     errMessage: "",
     successMessage: "",
     allocateBed: false,
-    bedNumber: 0,
+    bedAllocated: 0,
   };
   const dispatch = useAuthDispatch(),
     { token, loading } = useAuthState();
   const [state, setState] = useState(initialState);
+
+  const update = async () => {
+    const data = await EditDoctorReport(dispatch, {
+      token: "doctor " + token,
+      patientId: localStorage.getItem("patientId"),
+      consultantWord: state.consultantWord,
+      medicines: state.medicines,
+      bedAllocated: state.allocateBed,
+    });
+    if (data && data.success) {
+      setState({
+        ...state,
+        successMessage: "Report Updated Successfully!",
+        errorMessage: "",
+      });
+      window.location.reload(false);
+    } else {
+      setState({
+        ...state,
+        errorMessage: "Something went wrong!" || data.msg,
+        successMessage: "",
+      });
+    }
+  };
   useEffect(async () => {
     const patientId = localStorage.getItem("patientId");
     if (Boolean(patientId)) {
@@ -38,7 +62,6 @@ const DoctorReport = (props) => {
     }
   }, []);
   const handleOnChange = (event) => {
-    console.log(state);
     setState({
       ...state,
       [event.target.name]: event.target.value,
@@ -49,28 +72,6 @@ const DoctorReport = (props) => {
           ? !state.allocateBed
           : state.allocateBed,
     });
-  };
-  const update = async () => {
-    const data = await EditDoctorReport(dispatch, {
-      token: "doctor " + token,
-      patientId: localStorage.getItem("patientId"),
-      consultantWord: state.consultantWord,
-      medicines: state.medicines,
-      bedAllocated: state.allocateBed,
-    });
-    if (data && data.success) {
-      setState({
-        ...state,
-        successMessage: "Report Updated Successfully!",
-        errorMessage: "",
-      });
-    } else {
-      setState({
-        ...state,
-        errorMessage: "Something went wrong!" || data.msg,
-        successMessage: "",
-      });
-    }
   };
   if (!loading && state.name === "") {
     return (
@@ -194,8 +195,8 @@ const DoctorReport = (props) => {
                     onChange={handleOnChange}
                   />
                   <label htmlFor="allocateBed">
-                    {state.bedNumber > 0
-                      ? "Allocated Bed " + state.bedNumber
+                    {state.bedAllocated > 0
+                      ? "Allocated Bed " + state.bedAllocated
                       : "Allocate Bed"}
                   </label>
                 </div>

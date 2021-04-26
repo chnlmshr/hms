@@ -15,7 +15,7 @@ const Report = (props) => {
     consultantWord: "",
     allergies: "",
     medicines: "",
-    bedNumber: 0,
+    bedAllocated: 0,
   };
   const dispatch = useAuthDispatch(),
     { token, loading } = useAuthState();
@@ -95,7 +95,7 @@ const Report = (props) => {
                 </div>
                 <div className="col-2">
                   <strong>Bed:</strong>{" "}
-                  {state.bedNumber > 0 ? state.bedNumber : "N/A"}
+                  {state.bedAllocated > 0 ? state.bedAllocated : "N/A"}
                 </div>
                 <div className="col-6">
                   <strong>Consultant:</strong> {state.consultant}
