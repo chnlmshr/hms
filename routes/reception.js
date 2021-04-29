@@ -34,7 +34,7 @@ router.post("/reception", (req, res) => {
               speciality: speciality,
               dateCreated: Date.now(),
               lastModified: Date.now(),
-              consultant: "",
+              //consultant: " ",
               consultantWord: "",
               medicines: "",
             }
