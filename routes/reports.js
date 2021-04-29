@@ -121,7 +121,7 @@ router.post("/editdoctorreport", (req, res) => {
       )
         .then((reception) => {
           Doctor.findByIdAndUpdate(payload._id, {
-            $inc: { patientsInQueue: -1 },
+            $inc: { patientsInQueue: 1 },
           })
 
             .then((doctor) => {
